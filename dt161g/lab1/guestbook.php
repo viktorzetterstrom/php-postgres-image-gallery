@@ -14,13 +14,30 @@ $captchaLength = 5;
 $invalidCaptcha = false;
 session_start();
 
+// Check for post-request and create post if ok captcha.
 if (isset($_POST['name']) && isset($_POST['text']) && isset($_POST['captcha'])) {
-  if ($_POST['captcha'] == $_SESSION['captcha']) {
-    echo generateGuestBookPost($_POST['name'], $_POST['text']);
-    // Upload post.
+  if (isset($_COOKIE['hasPosted'])) {
+    alertUser('Du har redan skrivit i gästboken.');
+  }
+  else if ($_POST['captcha'] == $_SESSION['captcha']) {
+    // Create post.
+    $newPost = array('name' => $_POST['name'],
+                     'text' => $_POST['text'],
+                     'ip' => $_SERVER['REMOTE_ADDR'],
+                     'date' => date('Y-m-d H:i'));
+
+    // Store post
+    $posts = getPosts();
+    $posts[] = $newPost;
+    storePosts($posts);
+
+    // Generate cookie and refresh page to prevent more posts.
+    setcookie('hasPosted', 'true');
+    header("Refresh:0");
+
   } else {
     // Inform user.
-    alertUser('Invalid captcha, please try again.');
+    alertUser('Felaktig captcha, försök igen.');
     $invalidCaptcha = true;
   }
 }
@@ -29,25 +46,25 @@ if (isset($_POST['name']) && isset($_POST['text']) && isset($_POST['captcha'])) 
  * Function declarations.
  ******************************************************************************/
 
-/* Function that generates a new post based on a given name and text.
- * 
+/* Function that generates a html for a new post.
  */
-function generateGuestBookPost(string $name, string $text): string {
-  $guestBookPost = '<tr>';
+function generatePostHtml(array $post): string {
+  $name = $post['name'];
+  $text = $post['text'];
+  $ip = $post['ip'];
+  $date = $post['date'];
 
   // Add name.
-  $guestBookPost .= '<td>' . $name . '</td>';
+  $postHtml = '<tr><td>' . $name . '</td>';
 
   // Add text.
-  $guestBookPost .= '<td>' . $text . '</td>';
+  $postHtml .= '<td>' . $text . '</td>';
 
   // Add IP and time.
-  $ipAddress = $_SERVER['REMOTE_ADDR'];
-  $guestBookPost .= '<td>IP: ' . $ipAddress . '\n';
-  $date = date('Y-m-d H:i');
-  $guestBookPost .= 'TID: ' . $date . '</tr></td>';
+  $postHtml .= '<td>IP: ' . $ip . '<br>';
+  $postHtml .= 'TID: ' . $date . '</tr></td>';
 
-  return $guestBookPost;
+  return $postHtml;
 }
 
 /* Function that generates a captcha of specified length. Uses upper and lower case as
@@ -74,6 +91,25 @@ function generateCaptcha(int $length): string {
  */
 function alertUser(string $message): void {
   echo "<script type='text/javascript'>alert('$message');</script>";
+}
+
+/* Gets posts from guestbookPosts.json
+ */
+function getPosts(): array {
+  $postsJson = file_get_contents(__DIR__ . '/guestbookPosts.json');
+  $posts = json_decode($postsJson, true);
+  if (!empty($posts)) {
+    return $posts;
+  } else {
+    return array();
+  }
+}
+
+/* Stores a post in guestbookPosts.json
+*/
+function storePosts(array $posts): void {
+  $postsJson = json_encode($posts);
+  file_put_contents(__DIR__ . '/guestbookPosts.json', $postsJson);
 }
 
 /*******************************************************************************
@@ -117,55 +153,51 @@ function alertUser(string $message): void {
     </aside>
     <section>
         <h2>GÄSTBOK</h2>
-
+      
         <table>
-            <tr>
-                <th class="th20">FRÅN
-                </th>
-                <th class="th40">INLÄGG
-                </th>
-                <th class="th40">LOGGNING
-                </th>
-            </tr>
-            <tr>
-                <td>Johan
-                </td>
-                <td>Mitt första inlägg
-                </td>
-                <td>IP: 10.55.102.80<br>
-                    TID: 2011-01-13 12:34
-                </td>
-            </tr>
-            <tr>
-                <td>Johan
-                </td>
-                <td>Mitt andra, OBS fick byta dator för att kunna göra detta
-                </td>
-                <td>IP: 10.55.102.83<br>
-                    TID: 2011-01-13 12:35
-                </td>
-            </tr>
+
+        <tr>
+            <th class="th20">FRÅN
+            </th>
+            <th class="th40">INLÄGG
+            </th>
+            <th class="th40">LOGGNING
+            </th>
+        </tr>
+
+        <?PHP
+          $guestbookPosts = getPosts();
+          if (!empty($guestbookPosts)) {
+            foreach ($guestbookPosts as $post) {
+              echo generatePostHtml($post);
+            }
+          }
+
+        ?>
         </table>
 
+        <?PHP if (!isset($_COOKIE['hasPosted'])) : ?>
         <form action="guestbook.php" method="POST">
             <fieldset>
                 <legend>Skriv i gästboken</legend>
                 <label>Från: </label>
                 <input type="text" placeholder="Skriv ditt namn"
-                       name="name">
+                       name="name" value="<?php if ($invalidCaptcha) { echo $_POST['name']; } ?>">
                 <br>
                 <label for="text">Inlägg</label>
                 <textarea id="text" name="text"
                           rows="10" cols="50"
-                          placeholder="Skriva meddelande här"></textarea>
+                          placeholder="Skriv meddelande här"
+                          ><?php if ($invalidCaptcha) { echo $_POST['text']; } ?></textarea>
                 <br>
                 <label>Captcha: <span class="red"><?PHP echo generateCaptcha($captchaLength); ?></span></label>
-                <input type="text" placeholder="Skriva captcha här"
+                <input type="text" placeholder="Skriv captcha här"
                        name="captcha"
                        required>
                 <button type="submit">Skicka</button>
             </fieldset>
         </form>
+        <?PHP endif; ?>
 
 
     </section>
