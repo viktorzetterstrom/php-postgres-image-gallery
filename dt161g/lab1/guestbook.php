@@ -4,15 +4,77 @@
  * File: guestbook.php
  * Desc: Guestbook page for laboration 1
  *
- * Anders Student
- * ansu6543
- * anders.student@domän.se
+ * Viktor Zetterström
+ * vize1500
+ * vize1500@student.miun.se
  ******************************************************************************/
-$title = "Laboration 1"
+declare(strict_types = 1);
+$title = "Laboration 1";
+$captchaLength = 5;
+$invalidCaptcha = false;
+session_start();
 
+if (isset($_POST['name']) && isset($_POST['text']) && isset($_POST['captcha'])) {
+  if ($_POST['captcha'] == $_SESSION['captcha']) {
+    echo generateGuestBookPost($_POST['name'], $_POST['text']);
+    // Upload post.
+  } else {
+    // Inform user.
+    alertUser('Invalid captcha, please try again.');
+    $invalidCaptcha = true;
+  }
+}
 
-// Här skall alla server kod skrivas för gästboken.
+/*******************************************************************************
+ * Function declarations.
+ ******************************************************************************/
 
+/* Function that generates a new post based on a given name and text.
+ * 
+ */
+function generateGuestBookPost(string $name, string $text): string {
+  $guestBookPost = '<tr>';
+
+  // Add name.
+  $guestBookPost .= '<td>' . $name . '</td>';
+
+  // Add text.
+  $guestBookPost .= '<td>' . $text . '</td>';
+
+  // Add IP and time.
+  $ipAddress = $_SERVER['REMOTE_ADDR'];
+  $guestBookPost .= '<td>IP: ' . $ipAddress . '\n';
+  $date = date('Y-m-d H:i');
+  $guestBookPost .= 'TID: ' . $date . '</tr></td>';
+
+  return $guestBookPost;
+}
+
+/* Function that generates a captcha of specified length. Uses upper and lower case as
+ * well as numbers.
+ */
+function generateCaptcha(int $length): string {
+  // Define chars for captcha
+  $chars = '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+
+  // Shuffle charstring
+  $chars = str_shuffle($chars);
+
+  // Extract captcha as the (length) first chars of the array.
+  $captcha = substr($chars, 0, $length);
+
+  // Store captcha in session storage.
+  $_SESSION['captcha'] = $captcha;
+
+  // Return captcha.
+  return $captcha;
+}
+
+/* Function that creates an alert window to inform the user of something.
+ */
+function alertUser(string $message): void {
+  echo "<script type='text/javascript'>alert('$message');</script>";
+}
 
 /*******************************************************************************
  * HTML section starts here
@@ -72,7 +134,6 @@ $title = "Laboration 1"
                 </td>
                 <td>IP: 10.55.102.80<br>
                     TID: 2011-01-13 12:34
-
                 </td>
             </tr>
             <tr>
@@ -98,7 +159,7 @@ $title = "Laboration 1"
                           rows="10" cols="50"
                           placeholder="Skriva meddelande här"></textarea>
                 <br>
-                <label>Captcha: <span class="red">d6t4D</span></label>
+                <label>Captcha: <span class="red"><?PHP echo generateCaptcha($captchaLength); ?></span></label>
                 <input type="text" placeholder="Skriva captcha här"
                        name="captcha"
                        required>
