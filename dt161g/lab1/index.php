@@ -4,9 +4,9 @@
  * File: index.php
  * Desc: Start page for laboration 1
  *
- * Anders Student
- * ansu6543
- * anders.student@domän.se
+ * Viktor Zetterström
+ * vize1500
+ * vize1500@student.miun.se
  ******************************************************************************/
 $title = "Laboration 1"
 
