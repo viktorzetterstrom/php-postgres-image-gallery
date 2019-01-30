@@ -4,9 +4,9 @@
  * File: member.php
  * Desc: Member page for laboration 2
  *
- * Anders Student
- * ansu6543
- * ansu6543@student.miun.se
+ * Viktor Zetterström
+ * vize1500
+ * vize1500@student.miun.se
  ******************************************************************************/
 
 // Här skall det ske kontroll om man har loggat in och är behörig att se denna sida.

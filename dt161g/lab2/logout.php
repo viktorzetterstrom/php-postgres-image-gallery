@@ -4,9 +4,9 @@
  * File: logout.php
  * Desc: Logout page for laboration 2
  *
- * Anders Student
- * ansu6543
- * ansu6543@student.miun.se
+ * Viktor Zetterström
+ * vize1500
+ * vize1500@student.miun.se
  ******************************************************************************/
 
 // This array holds the links to be displayed when a user has logged out
