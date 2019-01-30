@@ -16,13 +16,19 @@ session_start();
 
 // Check for post-request and create post if ok captcha.
 if (isset($_POST['name']) && isset($_POST['text']) && isset($_POST['captcha'])) {
+  // Sanitize inputs.
+  $sanitizedCaptcha = htmlspecialchars($_POST['captcha']);
+  $sanitizedName = htmlspecialchars($_POST['name']);
+  $sanitizedText = htmlspecialchars($_POST['text']);
+
   if (isset($_COOKIE['hasPosted'])) {
     alertUser('Du har redan skrivit i gästboken.');
   }
-  else if ($_POST['captcha'] == $_SESSION['captcha']) {
+
+  else if ($sanitizedCaptcha == $_SESSION['captcha']) {
     // Create post.
-    $newPost = array('name' => $_POST['name'],
-                     'text' => $_POST['text'],
+    $newPost = array('name' => $sanitizedName,
+                     'text' => $sanitizedText,
                      'ip' => $_SERVER['REMOTE_ADDR'],
                      'date' => date('Y-m-d H:i'));
 
