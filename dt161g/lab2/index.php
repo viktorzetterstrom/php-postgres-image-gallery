@@ -34,8 +34,8 @@ $title = "Laboration 2"
             <h2>LOGIN</h2>
             <form id="loginForm">
                 <label><b>Username</b></label>
-                <input type="text" placeholder="m" name="uname" id="uname"
-                       required maxlength="10" value="m" autocomplete="off">
+                <input type="text" placeholder="Enter Username" name="uname" id="uname"
+                       required maxlength="10" autocomplete="off">
                 <label><b>Password</b></label>
                 <input type="password" placeholder="Enter Password" name="psw" id="psw"
                        required>

@@ -1,1 +1,9 @@
 .DS_Store
+.idea/
+.vscode/
+package.json
+node_modules
+package-lock.json
+.eslintrc.json
+.jshintrc
+eslintrc.js

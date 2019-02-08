@@ -9,35 +9,47 @@
  * vize1500@student.miun.se
  ******************************************************************************/
 
-// user_array holds username and password
-// There are two users: m with password m and a with password a
-$user_array = array(
-    "m" => "m",
-    "a" => "a"
-);
-// Just to show how to iterate through an map array
-foreach ($user_array as $username => $password) {
-    //echo "Username=" . $$username . ", Password=" . $password;
+
+processLogin();
+
+function processLogin(): void {
+  // userArray holds username and password
+  // There are two users: m with password m and a with password a
+  $userArray = array(
+    'm' => 'm',
+    'a' => 'a'
+  );
+
+  // This array holds the links to be displayed when a user has logged in
+  $linkArray = [
+  'Hem' => 'index.php',
+  'Gästbok' => 'guestbook.php',
+  'Medlemssida' => 'members.php'
+  ];
+
+  session_start();
+  $responseText = '';
+  if (!empty($_POST)) {
+    $userName = $_POST['uname'];
+    $password = $_POST['psw'];
+    $loginOk = login($userName, $password, $userArray);
+    
+    if ($loginOk) {
+      $responseText .= 'LoginOK!';
+    } else {
+      $responseText .= 'myeeeh!';
+    }
+
+  echo $responseText;
+  } 
 }
 
-// This array holds the links to be displayed when a user has logged in
-$link_array = [
-	"Hem" => "index.php",
-    "Gästbok" => "guestbook.php",
-    "Medlemssida" => "members.php"
-];
-
-
-// Example code
-session_start();
-if (!isset($_SESSION['count'])) {
-    $_SESSION['count'] = 1;
-} else {
-    $_SESSION['count']++;
+function login(string $userName, string $password, array $userArray): bool {
+  foreach ($userArray as $storedUserName => $storedPassword) {
+    if ($userName == $storedUserName && $password == $storedPassword) {
+      return true;
+    }
+  }
+  return false;
 }
-$responseText = "Session count is: " . $_SESSION['count'];
-
-header('Content-Type: application/json');
-echo json_encode($responseText);
-
 ?>
