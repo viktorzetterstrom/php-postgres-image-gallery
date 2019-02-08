@@ -30,12 +30,10 @@ function processLogin(): void {
 
   // This array holds the links to be displayed when a user has logged in
   $linkArray = [
-  'Hem' => 'index.php',
-  'Gästbok' => 'guestbook.php',
-  'Medlemssida' => 'members.php'
+  'HEM' => 'index.php',
+  'GÄSTBOK' => 'guestbook.php',
+  'MEDLEMSSIDA' => 'members.php'
   ];
-
-  session_start();
 
   if (!empty($_POST)) {
     $userName = $_POST['uname'];
@@ -44,13 +42,17 @@ function processLogin(): void {
     $response = [];
 
     if ($loginStatus == LoginStatus::OK) {
-      $_SESSION[$userName] = 'loggedIn';
+      session_start();
+      $_SESSION['loggedIn'] = $userName;
       $response['responseText'] = 'You are logged in.';
       $response['links']  = $linkArray;
+      $response['success'] = true;
     } elseif ($loginStatus == LoginStatus::INVALID_USER) {
       $response['responseText']  = 'User name does not exist.';
+      $response['success'] = false;
     } elseif ($loginStatus == LoginStatus::WRONG_PASSWORD) {
       $response['responseText']  = 'Wrong password.';
+      $response['success'] = false;
     }
 
     header('Content-Type: application/json');

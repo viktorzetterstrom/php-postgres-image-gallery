@@ -13,6 +13,8 @@ $title = "Laboration 1";
 $captchaLength = 5;
 $invalidCaptcha = false;
 session_start();
+// Check if logged in.
+$loggedIn = isset($_SESSION['loggedIn']);
 
 // Check for post-request and create post if ok captcha.
 if (isset($_POST['name']) && isset($_POST['text']) && isset($_POST['captcha'])) {
@@ -124,51 +126,71 @@ function storePosts(array $posts): void {
 ?>
 <!DOCTYPE html>
 <html lang="sv-SE">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css"/>
-    <title>DT161G-Laboration1</title>
-</head>
-<body>
-<header>
-    <img src="img/mittuniversitetet.jpg" alt="miun logga" class="logo"/>
-    <h1><?php echo $title ?></h1>
-</header>
-<main>
-    <aside>
-        <h2>LOGIN</h2>
-        <form action="index.php">
-            <label><b>Username</b></label>
-            <input type="text" placeholder="Enter Username" name="uname"
-                   required maxlength="10">
-            <label><b>Password</b></label>
-            <input type="password" placeholder="Enter Password" name="psw"
-                   required>
-            <button type="submit">Login</button>
-        </form>
-        <h2>MENY</h2>
-        <nav>
-            <ul>
-                <li>
-                    <a href="index.php">HEM</a>
-                </li>
 
-            </ul>
-        </nav>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="js/main.js"></script>
+  <title>DT161G-Laboration2</title>
+</head>
+
+<body>
+  <header>
+    <img src="img/mittuniversitetet.jpg" alt="miun logga" class="logo" />
+    <h1>
+      <?php echo $title ?>
+    </h1>
+  </header>
+  <main>
+    <aside>
+
+      <div id="login" <?php if ($loggedIn) echo 'style="display:none"'?>>
+        <h2>LOGIN</h2>
+        <form id="loginForm">
+          <label><b>Username</b></label>
+          <input type="text" placeholder="Enter Username" name="uname" id="uname" required maxlength="10" autocomplete="off">
+          <label><b>Password</b></label>
+          <input type="password" placeholder="Enter Password" name="psw" id="psw" required>
+          <button type="button" id="loginButton">Login</button>
+        </form>
+      </div>
+      <div id="logout" <?php if (!$loggedIn) echo 'style="display:none"'?>>
+        <h2>LOGOUT</h2>
+        <button type="button" id="logoutButton">Logout</button>
+      </div>
+      <p id="message"></p>
+
+      <h2>MENY</h2>
+      <nav>
+        <ul class='sidebar-links'>
+          <li>
+            <a href="index.php">HEM</a>
+          </li>
+          <li>
+            <a href="guestbook.php">GÄSTBOK</a>
+          </li>
+          <?php if ($loggedIn): ?>
+          <li>
+            <a href="members.php">MEDLEMSSIDA</a>
+          </li>
+          <?PHP endif ?>
+        </ul>
+      </nav>
     </aside>
+
+
     <section>
-        <h2>GÄSTBOK</h2>
-      
-        <table>
+      <h2>GÄSTBOK</h2>
+      <table>
 
         <tr>
-            <th class="th20">FRÅN
-            </th>
-            <th class="th40">INLÄGG
-            </th>
-            <th class="th40">LOGGNING
-            </th>
+          <th class="th20">FRÅN
+          </th>
+          <th class="th40">INLÄGG
+          </th>
+          <th class="th40">LOGGNING
+          </th>
         </tr>
 
         <?PHP
@@ -180,36 +202,30 @@ function storePosts(array $posts): void {
           }
 
         ?>
-        </table>
+      </table>
 
-        <?PHP if (!isset($_COOKIE['hasPosted'])) : ?>
-        <form action="guestbook.php" method="POST">
-            <fieldset>
-                <legend>Skriv i gästboken</legend>
-                <label>Från: </label>
-                <input type="text" placeholder="Skriv ditt namn"
-                       name="name" value="<?php if ($invalidCaptcha) { echo $_POST['name']; } ?>">
-                <br>
-                <label for="text">Inlägg</label>
-                <textarea id="text" name="text"
-                          rows="10" cols="50"
-                          placeholder="Skriv meddelande här"
-                          ><?php if ($invalidCaptcha) { echo $_POST['text']; } ?></textarea>
-                <br>
-                <label>Captcha: <span class="red"><?PHP echo generateCaptcha($captchaLength); ?></span></label>
-                <input type="text" placeholder="Skriv captcha här"
-                       name="captcha"
-                       required>
-                <button type="submit">Skicka</button>
-            </fieldset>
-        </form>
-        <?PHP endif; ?>
-
+      <?PHP if (!isset($_COOKIE['hasPosted'])) : ?>
+      <form action="guestbook.php" method="POST">
+        <fieldset>
+          <legend>Skriv i gästboken</legend>
+          <label>Från: </label>
+          <input type="text" placeholder="Skriv ditt namn" name="name" value="<?php if ($invalidCaptcha) { echo $_POST['name']; } ?>">
+          <br>
+          <label for="text">Inlägg</label>
+          <textarea id="text" name="text" rows="10" cols="50" placeholder="Skriv meddelande här"><?php if ($invalidCaptcha) { echo $_POST['text']; } ?></textarea>
+          <br>
+          <label>Captcha: <span class="red">
+              <?PHP echo generateCaptcha($captchaLength); ?></span></label>
+          <input type="text" placeholder="Skriv captcha här" name="captcha" required>
+          <button type="submit">Skicka</button>
+        </fieldset>
+      </form>
+      <?PHP endif; ?>
 
     </section>
-</main>
-<footer>
+  </main>
+  <footer>
     Footer
-</footer>
+  </footer>
 </body>
 </html>

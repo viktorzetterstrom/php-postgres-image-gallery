@@ -16,6 +16,9 @@ var xhr;                // Variabel att lagra XMLHttpRequestobjektet
 function byId(id) {
   return document.getElementById(id);
 }
+function byClass(className) {
+  return document.getElementsByClassName(className);
+}
 /******************************************************************************/
 
 
@@ -76,10 +79,12 @@ function processLogin() {
     xhr.removeEventListener('readystatechange', processLogin, false);
 
     let response = JSON.parse(this.responseText);
-
     byId('message').innerHTML = response.responseText;
-    byId('logout').style.display = 'block';
-    byId('login').style.display = 'none';
+    if (response.success) {
+      byId('logout').style.display = 'block';
+      byId('login').style.display = 'none';
+      setSidebarLinks(response.links);
+    }
   }
 }
 
@@ -90,9 +95,25 @@ function processLogout() {
   if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
     //First we most remove the registered event since we use the same xhr object for login and logout
     xhr.removeEventListener('readystatechange', processLogout, false);
-    var myResponse = JSON.parse(this.responseText);
-    byId('message').innerHTML = myResponse;
+    var response = JSON.parse(this.responseText);
+    if (byId('message')) {
+      byId('message').innerHTML = response.responseText;
+    }
+    setSidebarLinks(response.links);
     byId('login').style.display = 'block';
     byId('logout').style.display = 'none';
+  }
+}
+
+/*******************************************************************************
+ * Function setSidebarLinks
+ ******************************************************************************/
+function setSidebarLinks(links) {
+  let sidebarLinks = byClass('sidebar-links')[0];
+  sidebarLinks.innerHTML = '';
+  for (let linkName in links) {
+    if (links.hasOwnProperty(linkName)) {
+      sidebarLinks.innerHTML += '<li><a href="'+ links[linkName] + '">' + linkName + '</a>';
+    }
   }
 }

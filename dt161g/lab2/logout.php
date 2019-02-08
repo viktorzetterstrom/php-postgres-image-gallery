@@ -10,12 +10,10 @@
  ******************************************************************************/
 
 // This array holds the links to be displayed when a user has logged out
-$link_array = [
-	"Hem" => "index.php",
-    "Gästbok" => "guestbook.php",
+$linkArray = [
+	"HEM" => "index.php",
+  "GÄSTBOK" => "guestbook.php",
 ];
-
-
 
 // Initialize the session.
 // If you are using session_name("something"), don't forget it now!
@@ -37,9 +35,11 @@ if (ini_get("session.use_cookies")) {
 // Finally, destroy the session.
 session_destroy();
 
-$responseText = "You are logged out and the session cookie has been destroyed";
+$response = [];
+$response['responseText'] = "You are logged out and the session cookie has been destroyed";
+$response['links'] = $linkArray;
 header('Content-Type: application/json');
-echo json_encode($responseText);
+echo json_encode($response);
 
 ?>
 
