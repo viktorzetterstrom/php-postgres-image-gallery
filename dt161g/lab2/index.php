@@ -48,14 +48,14 @@ $title = "Laboration 2"
         </div>
         <h2>MENY</h2>
         <nav>
-            <ul>
-				<li>
+
+            <ul class="sidebar-links">
+				        <li>
                     <a href="index.php">HEM</a>
                 </li>
                 <li>
                     <a href="guestbook.php">GÄSTBOK</a>
                 </li>
-
             </ul>
         </nav>
     </aside>
@@ -63,7 +63,7 @@ $title = "Laboration 2"
         <h2>VÄLKOMMEN
         </h2>
         <p>Detta är andra laborationen</p>
-        <p id="count"></p>
+        <p id="message"></p>
     </section>
 </main>
 <footer>

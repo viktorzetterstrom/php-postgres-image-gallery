@@ -49,7 +49,7 @@ window.addEventListener('load', main, false); // Connect the main function to wi
 function doLogin() {
   let userName = byId('uname').value;
   let password = byId('psw').value;
-  
+
   if (userName !== '' && password !== '') {
     xhr.addEventListener('readystatechange', processLogin, false);
     xhr.open('POST', 'login.php', true);
@@ -74,7 +74,10 @@ function processLogin() {
   if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
     //First we must remove the registered event since we use the same xhr object for login and logout
     xhr.removeEventListener('readystatechange', processLogin, false);
-    byId('count').innerHTML = this.responseText;
+
+    let response = JSON.parse(this.responseText);
+
+    byId('message').innerHTML = response.responseText;
     byId('logout').style.display = 'block';
     byId('login').style.display = 'none';
   }
@@ -88,7 +91,7 @@ function processLogout() {
     //First we most remove the registered event since we use the same xhr object for login and logout
     xhr.removeEventListener('readystatechange', processLogout, false);
     var myResponse = JSON.parse(this.responseText);
-    byId('count').innerHTML = myResponse;
+    byId('message').innerHTML = myResponse;
     byId('login').style.display = 'block';
     byId('logout').style.display = 'none';
   }

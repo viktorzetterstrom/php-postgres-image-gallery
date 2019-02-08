@@ -12,6 +12,14 @@
 
 processLogin();
 
+// Enum för loginstatus
+interface LoginStatus {
+    const OK = 0;
+    const INVALID_USER = 1;
+    const WRONG_PASSWORD = 2;
+};
+
+
 function processLogin(): void {
   // userArray holds username and password
   // There are two users: m with password m and a with password a
@@ -28,28 +36,39 @@ function processLogin(): void {
   ];
 
   session_start();
-  $responseText = '';
+
   if (!empty($_POST)) {
     $userName = $_POST['uname'];
     $password = $_POST['psw'];
-    $loginOk = login($userName, $password, $userArray);
-    
-    if ($loginOk) {
-      $responseText .= 'LoginOK!';
-    } else {
-      $responseText .= 'myeeeh!';
+    $loginStatus = login($userName, $password, $userArray);
+    $response = [];
+
+    if ($loginStatus == LoginStatus::OK) {
+      $_SESSION[$userName] = 'loggedIn';
+      $response['responseText'] = 'You are logged in.';
+      $response['links']  = $linkArray;
+    } elseif ($loginStatus == LoginStatus::INVALID_USER) {
+      $response['responseText']  = 'User name does not exist.';
+    } elseif ($loginStatus == LoginStatus::WRONG_PASSWORD) {
+      $response['responseText']  = 'Wrong password.';
     }
 
-  echo $responseText;
+    header('Content-Type: application/json');
+    echo json_encode($response);
   } 
 }
 
-function login(string $userName, string $password, array $userArray): bool {
+function login(string $userName, string $password, array $userArray): int {
+  $status = LoginStatus::INVALID_USER;
   foreach ($userArray as $storedUserName => $storedPassword) {
-    if ($userName == $storedUserName && $password == $storedPassword) {
-      return true;
+    if ($userName == $storedUserName) {
+      if ($password == $storedPassword) {
+        $status = LoginStatus::OK;
+      } else {
+        $status = LoginStatus::WRONG_PASSWORD;
+      }
     }
   }
-  return false;
+  return $status;
 }
 ?>
