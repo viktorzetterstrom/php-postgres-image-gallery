@@ -1,13 +1,14 @@
 <?php
 /*******************************************************************************
- * Laboration 4, Kurs: DT161G
+ * Laboration 3, Kurs: DT161G
  * File: util.php
- * Desc: Util file for laboration 4
+ * Desc: Util file for laboration 3
  *
- * Anders Student
- * ansu6543
- * ansu6543@student.miun.se
+ * Viktor Zetterström
+ * vize1500
+ * vize1500@student.miun.se
  ******************************************************************************/
+require_once("config.php");
 
 /*******************************************************************************
  * autoload functions for Classes stored i directory classes
@@ -21,12 +22,11 @@ spl_autoload_register('my_autoloader');
 
 /*******************************************************************************
  * set debug true/false to change php.ini
- * To get more debugg information when developing set to true,
+ * To get more debug information when developing set to true,
  * for production set to false
  ******************************************************************************/
-$debug = true;
 
-if ($debug) {
+if (Config::getDebug()) {
     error_reporting(E_ALL);
     ini_set('display_errors', 'On');
 }

@@ -1,20 +1,19 @@
 <?php
 /*******************************************************************************
- * Laboration 4, Kurs: DT161G
+ * Laboration 2, Kurs: DT161G
  * File: logout.php
- * Desc: Logout page for laboration 4
+ * Desc: Logout page for laboration 2
  *
- * Anders Student
- * ansu6543
- * ansu6543@student.miun.se
+ * Viktor Zetterström
+ * vize1500
+ * vize1500@student.miun.se
  ******************************************************************************/
 
-// This array holds the links to be displayed when a user has logged in
-$link_array = [
-    "Gästbok" => "guestbook.php",
+// This array holds the links to be displayed when a user has logged out
+$linkArray = [
+	"HEM" => "index.php",
+  "GÄSTBOK" => "guestbook.php",
 ];
-
-
 
 // Initialize the session.
 // If you are using session_name("something"), don't forget it now!
@@ -36,9 +35,11 @@ if (ini_get("session.use_cookies")) {
 // Finally, destroy the session.
 session_destroy();
 
-$responseText = "You are logged out and the session cookie has been destroyed";
+$response = [];
+$response['responseText'] = "You are logged out and the session cookie has been destroyed";
+$response['links'] = $linkArray;
 header('Content-Type: application/json');
-echo json_encode($responseText);
+echo json_encode($response);
 
 ?>
 
