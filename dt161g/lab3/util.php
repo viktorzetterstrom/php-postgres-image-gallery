@@ -26,7 +26,7 @@ spl_autoload_register('my_autoloader');
  * for production set to false
  ******************************************************************************/
 
-if ($debug) {
+if (Config::getDebug()) {
     error_reporting(E_ALL);
     ini_set('display_errors', 'On');
 }

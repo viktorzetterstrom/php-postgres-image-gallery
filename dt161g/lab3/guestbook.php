@@ -103,14 +103,29 @@ function alertUser(string $message): void {
   echo "<script type='text/javascript'>alert('$message');</script>";
 }
 
-/* Gets posts from guestbookPosts.json
+/* Gets posts from database
  */
 function getPosts(): array {
-  $postsJson = file_get_contents(__DIR__ . '/guestbookPosts.json');
-  $posts = json_decode($postsJson, true);
-  if (!empty($posts)) {
+  // Connect to db
+  $db = pg_connect(Config::getConnectString());
+  $posts = [];
+  if ($db) {
+    $query = 'SELECT * FROM dt161g.guestbook';
+    $result = pg_query($db, $query);
+    $dbPosts =  (pg_fetch_all($result, PGSQL_ASSOC));
+  
+    foreach ($dbPosts as $dbPost) {
+      $newPost = array('name' => $dbPost['name'],
+                      'text' => $dbPost['message'],
+                      'ip' => $dbPost['iplog'],
+                      'date' => $dbPost['timelog']);
+
+      array_push($posts, $newPost);
+    }
+
     return $posts;
   } else {
+    echo 'Error connecting to database';
     return array();
   }
 }
