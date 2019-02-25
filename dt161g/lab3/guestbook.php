@@ -41,7 +41,7 @@ if (isset($_POST['name']) && isset($_POST['text']) && isset($_POST['captcha'])) 
 
     // Generate cookie and refresh page to prevent more posts.
     setcookie('hasPosted', 'true');
-    //header("Refresh:0");
+    header("Refresh:0");
 
   } else {
     // Inform user.
@@ -126,7 +126,7 @@ function getPosts(): array {
       pg_free_result($result);
       pg_close($dbConnection);
     }
-    
+
     return $posts;
   } else {
     echo 'Error connecting to database';
@@ -141,9 +141,7 @@ function storePost(array $post): void {
   $dbConnection = pg_connect(Config::getConnectString());
   if ($dbConnection) {
   $query = 'INSERT INTO dt161g.guestbook (name, message, iplog) VALUES ($1, $2, $3)';
-  var_dump($post['name']);
-  var_dump($post['text']);
-  var_dump($post['ip']);
+
   // Do query
   $result = pg_query_params($dbConnection, $query, array($post['name'], $post['text'], $post['ip']));
 
