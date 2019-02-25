@@ -8,7 +8,7 @@
  * ansu6543
  * ansu6543@student.miun.se
  ******************************************************************************/
- 
+ require_once("config.php");
 
 class Config {
 

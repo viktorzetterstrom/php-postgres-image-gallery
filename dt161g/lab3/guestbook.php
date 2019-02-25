@@ -9,6 +9,7 @@
  * vize1500@student.miun.se
  ******************************************************************************/
 declare(strict_types = 1);
+require_once("util.php");
 $title = "Laboration 1";
 $captchaLength = 5;
 $invalidCaptcha = false;

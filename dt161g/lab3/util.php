@@ -8,6 +8,7 @@
  * vize1500
  * vize1500@student.miun.se
  ******************************************************************************/
+require_once("config.php");
 
 /*******************************************************************************
  * autoload functions for Classes stored i directory classes
@@ -24,7 +25,6 @@ spl_autoload_register('my_autoloader');
  * To get more debug information when developing set to true,
  * for production set to false
  ******************************************************************************/
-$debug = true;
 
 if ($debug) {
     error_reporting(E_ALL);
