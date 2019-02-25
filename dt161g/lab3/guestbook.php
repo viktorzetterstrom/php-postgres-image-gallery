@@ -37,13 +37,11 @@ if (isset($_POST['name']) && isset($_POST['text']) && isset($_POST['captcha'])) 
                      'date' => date('Y-m-d H:i'));
 
     // Store post
-    $posts = getPosts();
-    $posts[] = $newPost;
-    storePosts($posts);
+    storePost($newPost);
 
     // Generate cookie and refresh page to prevent more posts.
     setcookie('hasPosted', 'true');
-    header("Refresh:0");
+    //header("Refresh:0");
 
   } else {
     // Inform user.
@@ -107,11 +105,11 @@ function alertUser(string $message): void {
  */
 function getPosts(): array {
   // Connect to db
-  $db = pg_connect(Config::getConnectString());
+  $dbConnection = pg_connect(Config::getConnectString());
   $posts = [];
-  if ($db) {
+  if ($dbConnection) {
     $query = 'SELECT * FROM dt161g.guestbook';
-    $result = pg_query($db, $query);
+    $result = pg_query($dbConnection, $query);
     $dbPosts =  (pg_fetch_all($result, PGSQL_ASSOC));
   
     foreach ($dbPosts as $dbPost) {
@@ -123,6 +121,10 @@ function getPosts(): array {
       array_push($posts, $newPost);
     }
 
+    // Close connection and free memory
+    pg_free_result($result);
+    pg_close($dbConnection);
+
     return $posts;
   } else {
     echo 'Error connecting to database';
@@ -132,9 +134,25 @@ function getPosts(): array {
 
 /* Stores a post in guestbookPosts.json
 */
-function storePosts(array $posts): void {
-  $postsJson = json_encode($posts);
-  file_put_contents(__DIR__ . '/guestbookPosts.json', $postsJson);
+function storePost(array $post): void {
+  // Connect to db
+  $dbConnection = pg_connect(Config::getConnectString());
+  if ($dbConnection) {
+  $query = 'INSERT INTO dt161g.guestbook (name, message, iplog) VALUES ($1, $2, $3)';
+  var_dump($post['name']);
+  var_dump($post['text']);
+  var_dump($post['ip']);
+  // Do query
+  $result = pg_query_params($dbConnection, $query, array($post['name'], $post['text'], $post['ip']));
+
+  if ($result != false) {
+    // Close connection and free memory
+    pg_free_result($result);
+    pg_close($dbConnection);
+  }
+  } else {
+    echo 'Error connecting to database';
+  }
 }
 
 /*******************************************************************************
