@@ -121,10 +121,12 @@ function getPosts(): array {
       array_push($posts, $newPost);
     }
 
-    // Close connection and free memory
-    pg_free_result($result);
-    pg_close($dbConnection);
-
+    if ($result != false) {
+      // Close connection and free memory
+      pg_free_result($result);
+      pg_close($dbConnection);
+    }
+    
     return $posts;
   } else {
     echo 'Error connecting to database';

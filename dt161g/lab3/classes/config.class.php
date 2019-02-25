@@ -26,8 +26,7 @@ class Config {
   }
 
   static public function getConnectString(): string {
-    $connectString = 'host=' . self::$host . ' port=' . self::$port . ' dbname=' . self::$dbname . ' user=' . self::$user .' password=' . self::$password;
-    return $connectString;
+    return 'host=' . self::$host . ' port=' . self::$port . ' dbname=' . self::$dbname . ' user=' . self::$user .' password=' . self::$password;
   }
 
   static public function getDbDns(){
