@@ -19,7 +19,7 @@ if (!$loggedIn) {
   exit;
 }
 else {
-  $title = "Laboration 2";
+  $title = "Laboration 3";
 }
 ?>
 

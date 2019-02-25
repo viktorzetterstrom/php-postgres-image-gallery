@@ -9,16 +9,17 @@
  * vize1500@student.miun.se
  ******************************************************************************/
 
+// Debug mode
+$debug = true;
+
+// Connection values
 $host = 'studentpsql.miun.se';
 $port = '5432';
 $user = 'vize1500';
 $dbname = 'vize1500';
 $password = 'gRd6QmzSN';
-$debug = true;
 
 // String for connecting to database.
 $connectString = "host=$host port=$port dbname=$dbname user=$user password=$password";
-
-
 
 ?>

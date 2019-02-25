@@ -1,20 +1,19 @@
 <?php
+
 /*******************************************************************************
  * Laboration 3, Kurs: DT161G
- * File: config.class.php
- * Desc: Class Config for laboration 3
+ * File: util.php
+ * Desc: Class that handles the guestbook
  *
  * Viktor Zetterström
  * vize1500
  * vize1500@student.miun.se
  ******************************************************************************/
- require_once("config.php");
 
-class Config {
+ class Guestbook {
+  
+  public function addToDb(string $message): void {
+    
+  }
 
-    public function getDbDsn(){
-        $dsn = "";
-        return $dsn;
-    }
-
-}
+ }

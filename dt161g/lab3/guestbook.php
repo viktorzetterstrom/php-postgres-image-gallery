@@ -10,12 +10,13 @@
  ******************************************************************************/
 declare(strict_types = 1);
 require_once("util.php");
-$title = "Laboration 1";
+$title = "Laboration 3";
 $captchaLength = 5;
 $invalidCaptcha = false;
 session_start();
 // Check if logged in.
 $loggedIn = isset($_SESSION['loggedIn']);
+
 
 // Check for post-request and create post if ok captcha.
 if (isset($_POST['name']) && isset($_POST['text']) && isset($_POST['captcha'])) {
@@ -133,7 +134,7 @@ function storePosts(array $posts): void {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="css/style.css" />
   <script src="js/main.js"></script>
-  <title>DT161G-Laboration2</title>
+  <title>DT161G-Laboration3</title>
 </head>
 
 <body>

@@ -8,7 +8,7 @@
  * vize1500
  * vize1500@student.miun.se
  ******************************************************************************/
-$title = "Laboration 2";
+$title = "Laboration 3";
 
 // Check if logged in.
 session_start();
