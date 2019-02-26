@@ -1,9 +1,7 @@
 -- ##############################################
 -- KURS: DT161G
 -- Projekt
--- förnamn efternamn
--- Create table called xxx
--- Create table called yyy
--- etc...................................
+-- Viktor Zetterström
+-- vize1500@student.miun.se
 -- ##############################################
 

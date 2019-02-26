@@ -4,10 +4,11 @@
  * File: index.php
  * Desc: Start page for Projekt
  *
- * Anders Student
- * ansu6543
- * ansu6543@student.miun.se
+ * Viktor Zetterström
+ * vize1500
+ * vize1500@student.miun.se
  ******************************************************************************/
+
 $title = "DT161G - Projekt"
 
 /*******************************************************************************
