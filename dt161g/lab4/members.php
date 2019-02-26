@@ -13,10 +13,10 @@
 // Annars omdirigeras man till startsidan
 session_start();
 
-$loggedIn = isset($_SESSION['loggedIn']);
+$loggedIn = isset($_SESSION['loggedIn']) && isset($_SESSION['member']);
+$isAdmin = isset($_SESSION['admin']);
 if (!$loggedIn) {
   header("Location: index.php"); /* Redirect browser */
-  exit;
 }
 else {
   $title = "Laboration 4";
@@ -70,9 +70,17 @@ else {
           <li>
             <a href="guestbook.php">GÄSTBOK</a>
           </li>
+          <?php if ($loggedIn): ?>
           <li>
             <a href="members.php">MEDLEMSSIDA</a>
           </li>
+          <?PHP endif ?>
+
+          <?php if ($isAdmin): ?>
+          <li>
+            <a href="admin.php">ADMINSIDA</a>
+          </li>
+          <?PHP endif ?>
         </ul>
       </nav>
     </aside>

@@ -8,12 +8,10 @@
  * vize1500
  * vize1500@student.miun.se
  ******************************************************************************/
+require_once('util.php');
 
 // This array holds the links to be displayed when a user has logged out
-$linkArray = [
-	"HEM" => "index.php",
-  "GÄSTBOK" => "guestbook.php",
-];
+$linkArray = Config::Instance()->getBaseLinks();
 
 // Initialize the session.
 // If you are using session_name("something"), don't forget it now!

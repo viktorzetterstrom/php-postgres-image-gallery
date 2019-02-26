@@ -22,13 +22,6 @@ interface LoginStatus {
 
 
 function processLogin(): void {
-  // This array holds the links to be displayed when a user has logged in
-  $linkArray = [
-  'HEM' => 'index.php',
-  'GÄSTBOK' => 'guestbook.php',
-  'MEDLEMSSIDA' => 'members.php'
-  ];
-
   if (!empty($_POST)) {
     $userName = $_POST['uname'];
     $password = $_POST['psw'];
@@ -48,12 +41,26 @@ function processLogin(): void {
 
     $response = [];
     if ($loginStatus == LoginStatus::OK) {
+
+      // Start session.
       session_start();
       $_SESSION['loggedIn'] = $userName;
+
+      // Create links to send.
+      $linkArray = Config::Instance()->getBaseLinks();
+      foreach ($user->getRoles() as $role) {
+        if ($role->getRole() == 'member') {
+          $_SESSION['member'] = $userName;
+          $linkArray += Config::Instance()->getMemberLinks();
+        } else if ($role->getRole() == 'admin') {
+          $_SESSION['admin'] = $userName;
+          $linkArray += Config::Instance()->getAdminLinks();
+        }
+      }
+      
       $response['responseText'] = 'You are logged in.';
       $response['links']  = $linkArray;
       $response['success'] = true;
-      $response['roles'] = $user->getRoles();
     } elseif ($loginStatus == LoginStatus::INVALID_USER) {
       $response['responseText']  = 'User name does not exist.';
       $response['success'] = false;

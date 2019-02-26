@@ -33,6 +33,10 @@ class Config {
     return 'host=' . $this->host . ' port=' . $this->port . ' dbname=' . $this->dbname . ' user=' . $this->user .' password=' . $this->password;
   }
 
+  public function getBaseLinks() {
+    return $this->base_link_array;
+  }
+
   public function getMemberLinks() {
     return $this->member_link_array;
   }
@@ -51,15 +55,18 @@ class Config {
   private $dbname = 'vize1500';
   private $password = 'gRd6QmzSN';
 
+  private $base_link_array = [
+    'HEM' => 'index.php',
+    "GÄSTBOK" => "guestbook.php"
+  ];
 
   // This array holds the links to be displayed when a member has logged in
   private $member_link_array = [
-    "Gästbok" => "guestbook.php",
-    "Meddlemssida" => "members.php"
+    "MEDLEMSSIDA" => "members.php"
   ];
 
   // This array holds the links to be displayed when a admin has logged in
   private $admin_link_array = [
-    "Adminsida" => "admin.php"
+    "ADMINSIDA" => "admin.php"
   ];
 }

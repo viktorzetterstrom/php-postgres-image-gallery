@@ -12,7 +12,9 @@ $title = "Laboration 4";
 
 // Check if logged in.
 session_start();
-$loggedIn = isset($_SESSION['loggedIn']);
+$loggedIn = isset($_SESSION['loggedIn']) && isset($_SESSION['member']);
+$isAdmin = isset($_SESSION['admin']);
+
 
 /*******************************************************************************
  * HTML section starts here
@@ -71,6 +73,12 @@ $loggedIn = isset($_SESSION['loggedIn']);
             <a href="members.php">MEDLEMSSIDA</a>
           </li>
           <?PHP endif ?>
+
+          <?php if ($isAdmin): ?>
+          <li>
+            <a href="admin.php">ADMINSIDA</a>
+          </li>
+          <?php endif ?>
         </ul>
       </nav>
     </aside>

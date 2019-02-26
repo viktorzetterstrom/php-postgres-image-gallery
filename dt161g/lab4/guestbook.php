@@ -15,7 +15,8 @@ $captchaLength = 5;
 $invalidCaptcha = false;
 session_start();
 // Check if logged in.
-$loggedIn = isset($_SESSION['loggedIn']);
+$loggedIn = isset($_SESSION['loggedIn']) && isset($_SESSION['member']);
+$isAdmin = isset($_SESSION['admin']);
 
 
 // Check for post-request and create post if ok captcha.
@@ -103,6 +104,12 @@ if (isset($_POST['name']) && isset($_POST['text']) && isset($_POST['captcha'])) 
           <?php if ($loggedIn): ?>
           <li>
             <a href="members.php">MEDLEMSSIDA</a>
+          </li>
+          <?PHP endif ?>
+
+          <?php if ($isAdmin): ?>
+          <li>
+            <a href="admin.php">ADMINSIDA</a>
           </li>
           <?PHP endif ?>
         </ul>
