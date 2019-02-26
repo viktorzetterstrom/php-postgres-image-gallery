@@ -34,7 +34,7 @@ class DbHandler {
   */
   public function storePost(array $post): void {
     // Connect to db
-    $dbConnection = pg_connect(Config::Instance()->getConnectString());
+    $dbConnection = $this->connect();
     if ($dbConnection) {
     $query = 'INSERT INTO dt161g.guestbook (name, message, iplog) VALUES ($1, $2, $3)';
 
@@ -55,7 +55,7 @@ class DbHandler {
   */
   public function getPosts(): array {
     // Connect to db
-    $dbConnection = pg_connect(Config::Instance()->getConnectString());
+    $dbConnection = $this->connect();
     $posts = [];
     if ($dbConnection) {
       $query = 'SELECT * FROM dt161g.guestbook';
@@ -84,4 +84,7 @@ class DbHandler {
     }
   }
 
+  private function connect() {
+    return pg_connect(Config::Instance()->getConnectString());
+  }
 }
