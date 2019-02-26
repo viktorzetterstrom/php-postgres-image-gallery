@@ -9,7 +9,9 @@
  * vize1500@student.miun.se
  ******************************************************************************/
 
-
+/**
+ * Class representing a user of the webpage.
+ */
 class Member {
 
 

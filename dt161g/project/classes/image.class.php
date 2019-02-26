@@ -9,7 +9,10 @@
  * vize1500@student.miun.se
  ******************************************************************************/
 
-
+/**
+ * Class representing images to be used on the webpage and uploaded to the 
+ * database.
+ */
 class Image {
 
 

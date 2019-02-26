@@ -1,19 +1,18 @@
 <?php
 /*******************************************************************************
  * Projekt, Kurs: DT161G
- * File: config.class.php
- * Desc: Class Config for Projekt
+ * File: databas.class.php
+ * Desc: Class DbHandler for Projekt
  *
  * Viktor Zetterström
  * vize1500
  * vize1500@student.miun.se
  ******************************************************************************/
 
-
 /**
- * Singleton class responsible for keeping the configuration of the app.
+ * Singleton class responsible for communicating with the database.
  */
-class Config {
+class DbHandler {
 
   // Private constructor
   private function __construct() {
@@ -24,7 +23,7 @@ class Config {
   public static function Instance() {
     static $inst = null;
     if ($inst === null) {
-        $inst = new Config();
+        $inst = new DbHandler();
     }
     return $inst;
   }
