@@ -27,12 +27,20 @@ class Member {
     return $this->userName;
   }
 
-  public function getPassword(): string {
-    return $this->password;
+  public function testPassword($password): bool {
+    return $this->password == $password;
   }
 
-  public function getRoles(): Role {
+  public function getRoles(): array {
     return $this->roles;
+  }
+
+  public function isNull(): bool {
+    if ($this->userName == null) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   private $memberId;

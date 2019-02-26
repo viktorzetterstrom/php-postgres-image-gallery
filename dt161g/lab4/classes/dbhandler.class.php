@@ -63,11 +63,8 @@ class DbHandler {
 
       return new Member($memberId, $userName, $password, $roles);
     } else {
-      echo 'Error connecting to database';
       return new Member(null, null, null, null);
     }
-
-    
   }
 
 

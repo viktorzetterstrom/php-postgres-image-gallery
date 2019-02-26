@@ -22,13 +22,6 @@ interface LoginStatus {
 
 
 function processLogin(): void {
-  // userArray holds username and password
-  // There are two users: m with password m and a with password a
-  $userArray = array(
-    'm' => 'm',
-    'a' => 'a'
-  );
-
   // This array holds the links to be displayed when a user has logged in
   $linkArray = [
   'HEM' => 'index.php',
@@ -39,15 +32,28 @@ function processLogin(): void {
   if (!empty($_POST)) {
     $userName = $_POST['uname'];
     $password = $_POST['psw'];
-    $loginStatus = login($userName, $password, $userArray);
-    $response = [];
 
+    // Get user from database.
+    $user = DbHandler::Instance()->getMember($userName);
+
+    // If no such user exists return INVALID_USER.
+    if ($user->isNull()) {
+      $loginStatus = LoginStatus::INVALID_USER;
+    } // Test password, return OK or WRONG_PASSWORD depending on result.
+    else if ($user->testPassword($password)) {
+      $loginStatus = LoginStatus::OK;
+    } else {
+      $loginStatus = LoginStatus::WRONG_PASSWORD;
+    }
+
+    $response = [];
     if ($loginStatus == LoginStatus::OK) {
       session_start();
       $_SESSION['loggedIn'] = $userName;
       $response['responseText'] = 'You are logged in.';
       $response['links']  = $linkArray;
       $response['success'] = true;
+      $response['roles'] = $user->getRoles();
     } elseif ($loginStatus == LoginStatus::INVALID_USER) {
       $response['responseText']  = 'User name does not exist.';
       $response['success'] = false;
@@ -59,19 +65,4 @@ function processLogin(): void {
     header('Content-Type: application/json');
     echo json_encode($response);
   } 
-}
-
-function login(string $userName, string $password, array $userArray): int {
-  $status = LoginStatus::INVALID_USER;
-  
-  foreach ($userArray as $storedUserName => $storedPassword) {
-    if ($userName == $storedUserName) {
-      if ($password == $storedPassword) {
-        $status = LoginStatus::OK;
-      } else {
-        $status = LoginStatus::WRONG_PASSWORD;
-      }
-    }
-  }
-  return $status;
 }
