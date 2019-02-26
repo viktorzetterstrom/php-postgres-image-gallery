@@ -12,6 +12,8 @@ require_once('config.class.php');
 
 class DbHandler {
 
+  private $dbConnection;
+
   // Make constructor private
   private function __construct() {}
 
@@ -25,26 +27,65 @@ class DbHandler {
   }
 
 
-  // public function getMember($userName, $password) {
-  //   pg_query_params($connection, 'SELECT member.username, member.password, member.role FROM dt161g.member WHERE member.username = $1', [$userName]);
-  // }
+  public function getMember($userName): Member {
+    // Connect to db
+    $this->connect();
+
+    if ($this->isConnected()) {
+      // Get member data.
+      $userQuery = 'SELECT member.id, member.username, member.password  FROM dt161g.member WHERE member.username = $1';
+      $userResult = pg_query_params($this->dbConnection, $userQuery, [$userName]);
+      $userResultArr = pg_fetch_array($userResult);
+
+      // If no user is found, return null-user
+      if ($userResultArr['username'] != $userName) {
+        return new Member(null, null, null, null);
+      }
+
+      $password = $userResultArr['password'];
+      $memberId = $userResultArr['id'];
+
+      // Get member role data.
+      $roleQuery = 'SELECT * FROM dt161g.member_role INNER JOIN dt161g.role ON member_role.role_id = role.id WHERE member_role.member_id = $1';
+      $roleResult = pg_query_params($this->dbConnection, $roleQuery, [$memberId]);
+      $roleResultArr = pg_fetch_all($roleResult, PGSQL_ASSOC);
+      
+      $roles = [];
+      foreach ($roleResultArr as $row) {
+        array_push($roles, new Role($row['id'], $row['role'], $row['roletext']));
+      }
+
+      if ($userResult != false) {
+        // Close connection and free memory
+        pg_free_result($userResult);
+        $this->disconnect();
+      }
+
+      return new Member($memberId, $userName, $password, $roles);
+    } else {
+      echo 'Error connecting to database';
+      return new Member(null, null, null, null);
+    }
+
+    
+  }
 
 
   /* Stores a post on server.
   */
   public function storePost(array $post): void {
     // Connect to db
-    $dbConnection = $this->connect();
-    if ($dbConnection) {
+    $this->connect();
+    if ($this->isConnected()) {
     $query = 'INSERT INTO dt161g.guestbook (name, message, iplog) VALUES ($1, $2, $3)';
 
     // Do query
-    $result = pg_query_params($dbConnection, $query, array($post['name'], $post['text'], $post['ip']));
+    $result = pg_query_params($this->dbConnection, $query, array($post['name'], $post['text'], $post['ip']));
 
     if ($result != false) {
       // Close connection and free memory
       pg_free_result($result);
-      pg_close($dbConnection);
+      $this->disconnect();
     }
     } else {
       echo 'Error connecting to database';
@@ -55,11 +96,11 @@ class DbHandler {
   */
   public function getPosts(): array {
     // Connect to db
-    $dbConnection = $this->connect();
+    $this->connect();
     $posts = [];
-    if ($dbConnection) {
+    if ($this->isConnected()) {
       $query = 'SELECT * FROM dt161g.guestbook';
-      $result = pg_query($dbConnection, $query);
+      $result = pg_query($this->dbConnection, $query);
       $dbPosts =  (pg_fetch_all($result, PGSQL_ASSOC));
     
       foreach ($dbPosts as $dbPost) {
@@ -74,7 +115,7 @@ class DbHandler {
       if ($result != false) {
         // Close connection and free memory
         pg_free_result($result);
-        pg_close($dbConnection);
+        $this->disconnect();
       }
 
       return $posts;
@@ -84,7 +125,19 @@ class DbHandler {
     }
   }
 
+  private function isConnected() {
+    if ($this->dbConnection) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   private function connect() {
-    return pg_connect(Config::Instance()->getConnectString());
+    $this->dbConnection = pg_connect(Config::Instance()->getConnectString());
+  }
+
+  private function disconnect() {
+    pg_close($this->dbConnection);
   }
 }

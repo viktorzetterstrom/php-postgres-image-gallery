@@ -23,6 +23,10 @@ class Role {
     $this->roleText = $roleText;
   }
 
+  public function getId() {
+    return $this->roleId;
+  }
+
   public function getRole() {
     return $this->role;
   }

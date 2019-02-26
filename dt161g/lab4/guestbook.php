@@ -18,6 +18,11 @@ session_start();
 $loggedIn = isset($_SESSION['loggedIn']);
 
 
+
+$test = DbHandler::Instance()->getMember('s');
+
+var_dump($test);
+
 // Check for post-request and create post if ok captcha.
 if (isset($_POST['name']) && isset($_POST['text']) && isset($_POST['captcha'])) {
   // Sanitize inputs.

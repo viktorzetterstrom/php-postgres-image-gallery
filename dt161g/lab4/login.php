@@ -8,6 +8,7 @@
  * vize1500
  * vize1500@student.miun.se
  ******************************************************************************/
+require_once('util.php');
 
 
 processLogin();
@@ -62,6 +63,7 @@ function processLogin(): void {
 
 function login(string $userName, string $password, array $userArray): int {
   $status = LoginStatus::INVALID_USER;
+  
   foreach ($userArray as $storedUserName => $storedPassword) {
     if ($userName == $storedUserName) {
       if ($password == $storedPassword) {
@@ -73,4 +75,3 @@ function login(string $userName, string $password, array $userArray): int {
   }
   return $status;
 }
-?>
