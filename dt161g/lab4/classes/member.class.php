@@ -12,11 +12,11 @@
 
 class Member {
   
-  public function __construct($memberId, $userName, $passWord, $role) {
+  public function __construct($memberId, $userName, $passWord, $roles) {
     $this->memberId = $memberId;
     $this->userName = $userName;
     $this->password = $passWord;
-    $this->role = $role;
+    $this->roles = $roles;
   }
 
   public function getMemberId(): string {
@@ -27,12 +27,12 @@ class Member {
     return $this->userName;
   }
 
-  public function getRole(): Role {
-    return $this->role;
+  public function getRoles(): Role {
+    return $this->roles;
   }
 
   private $memberId;
   private $userName;
   private $password;
-  private $role;
+  private $roles;
 }

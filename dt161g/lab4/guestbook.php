@@ -37,7 +37,7 @@ if (isset($_POST['name']) && isset($_POST['text']) && isset($_POST['captcha'])) 
                      'date' => date('Y-m-d H:i'));
 
     // Store post
-    storePost($newPost);
+    DbHandler::Instance()->storePost($newPost);
 
     // Generate cookie and refresh page to prevent more posts.
     setcookie('hasPosted', 'true');
@@ -47,111 +47,6 @@ if (isset($_POST['name']) && isset($_POST['text']) && isset($_POST['captcha'])) 
     // Inform user.
     alertUser('Felaktig captcha, försök igen.');
     $invalidCaptcha = true;
-  }
-}
-
-/*******************************************************************************
- * Function declarations.
- ******************************************************************************/
-
-/* Function that generates a html for a new post.
- */
-function generatePostHtml(array $post): string {
-  $name = $post['name'];
-  $text = $post['text'];
-  $ip = $post['ip'];
-  $date = $post['date'];
-
-  // Add name.
-  $postHtml = '<tr><td>' . $name . '</td>';
-
-  // Add text.
-  $postHtml .= '<td>' . $text . '</td>';
-
-  // Add IP and time.
-  $postHtml .= '<td>IP: ' . $ip . '<br>';
-  $postHtml .= 'TID: ' . $date . '</tr></td>';
-
-  return $postHtml;
-}
-
-/* Function that generates a captcha of specified length. Uses upper and lower case as
- * well as numbers.
- */
-function generateCaptcha(int $length): string {
-  // Define chars for captcha
-  $chars = '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-
-  // Shuffle charstring
-  $chars = str_shuffle($chars);
-
-  // Extract captcha as the (length) first chars of the array.
-  $captcha = substr($chars, 0, $length);
-
-  // Store captcha in session storage.
-  $_SESSION['captcha'] = $captcha;
-
-  // Return captcha.
-  return $captcha;
-}
-
-/* Function that creates an alert window to inform the user of something.
- */
-function alertUser(string $message): void {
-  echo "<script type='text/javascript'>alert('$message');</script>";
-}
-
-/* Gets posts from database
- */
-function getPosts(): array {
-  // Connect to db
-  $dbConnection = pg_connect(Config::getConnectString());
-  $posts = [];
-  if ($dbConnection) {
-    $query = 'SELECT * FROM dt161g.guestbook';
-    $result = pg_query($dbConnection, $query);
-    $dbPosts =  (pg_fetch_all($result, PGSQL_ASSOC));
-  
-    foreach ($dbPosts as $dbPost) {
-      $newPost = array('name' => $dbPost['name'],
-                      'text' => $dbPost['message'],
-                      'ip' => $dbPost['iplog'],
-                      'date' => $dbPost['timelog']);
-
-      array_push($posts, $newPost);
-    }
-
-    if ($result != false) {
-      // Close connection and free memory
-      pg_free_result($result);
-      pg_close($dbConnection);
-    }
-
-    return $posts;
-  } else {
-    echo 'Error connecting to database';
-    return array();
-  }
-}
-
-/* Stores a post in guestbookPosts.json
-*/
-function storePost(array $post): void {
-  // Connect to db
-  $dbConnection = pg_connect(Config::getConnectString());
-  if ($dbConnection) {
-  $query = 'INSERT INTO dt161g.guestbook (name, message, iplog) VALUES ($1, $2, $3)';
-
-  // Do query
-  $result = pg_query_params($dbConnection, $query, array($post['name'], $post['text'], $post['ip']));
-
-  if ($result != false) {
-    // Close connection and free memory
-    pg_free_result($result);
-    pg_close($dbConnection);
-  }
-  } else {
-    echo 'Error connecting to database';
   }
 }
 
@@ -229,7 +124,7 @@ function storePost(array $post): void {
         </tr>
 
         <?PHP
-          $guestbookPosts = getPosts();
+          $guestbookPosts = DbHandler::Instance()->getPosts();
           if (!empty($guestbookPosts)) {
             foreach ($guestbookPosts as $post) {
               echo generatePostHtml($post);

@@ -8,7 +8,6 @@
  * vize1500
  * vize1500@student.miun.se
  ******************************************************************************/
-require_once("config.php");
 
 /*******************************************************************************
  * autoload functions for Classes stored i directory classes

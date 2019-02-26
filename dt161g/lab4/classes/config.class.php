@@ -24,42 +24,42 @@ class Config {
   }
 
   // Returns debug status
-  static public function getDebug() {
-    return self::$debug;
+ public function getDebug() {
+    return $this->debug;
   }
 
   // Returns string for connecting to pg
-  static public function getConnectString(): string {
-    return 'host=' . self::$host . ' port=' . self::$port . ' dbname=' . self::$dbname . ' user=' . self::$user .' password=' . self::$password;
+  public function getConnectString() {
+    return 'host=' . $this->host . ' port=' . $this->port . ' dbname=' . $this->dbname . ' user=' . $this->user .' password=' . $this->password;
   }
 
-  static public function getMemberLinks(): array {
-    return self::$member_link_array;
+  public function getMemberLinks() {
+    return $this->member_link_array;
   }
 
-  static public function getAdminLinks(): array {
-    return self::$admin_link_array;
+  public function getAdminLinks() {
+    return $this->admin_link_array;
   }
 
   // Debug mode
-  private static $debug = true;
+  private $debug = true;
 
   // Connection values
-  private static $host = 'studentpsql.miun.se';
-  private static $port = '5432';
-  private static $user = 'vize1500';
-  private static $dbname = 'vize1500';
-  private static $password = 'gRd6QmzSN';
+  private $host = 'studentpsql.miun.se';
+  private $port = '5432';
+  private $user = 'vize1500';
+  private $dbname = 'vize1500';
+  private $password = 'gRd6QmzSN';
 
 
   // This array holds the links to be displayed when a member has logged in
-  private static $member_link_array = [
+  private $member_link_array = [
     "Gästbok" => "guestbook.php",
     "Meddlemssida" => "members.php"
   ];
 
   // This array holds the links to be displayed when a admin has logged in
-  private static $admin_link_array = [
+  private $admin_link_array = [
     "Adminsida" => "admin.php"
   ];
 }
