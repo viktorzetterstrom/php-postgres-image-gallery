@@ -11,6 +11,36 @@
 
 class Config {
 
+  // Make constructor private
+  private function __construct() {}
+
+  // Singleton
+  public static function Instance() {
+      static $inst = null;
+      if ($inst === null) {
+          $inst = new Config();
+      }
+      return $inst;
+  }
+
+  // Returns debug status
+  static public function getDebug() {
+    return self::$debug;
+  }
+
+  // Returns string for connecting to pg
+  static public function getConnectString(): string {
+    return 'host=' . self::$host . ' port=' . self::$port . ' dbname=' . self::$dbname . ' user=' . self::$user .' password=' . self::$password;
+  }
+
+  static public function getMemberLinks(): array {
+    return self::$member_link_array;
+  }
+
+  static public function getAdminLinks(): array {
+    return self::$admin_link_array;
+  }
+
   // Debug mode
   private static $debug = true;
 
@@ -21,19 +51,15 @@ class Config {
   private static $dbname = 'vize1500';
   private static $password = 'gRd6QmzSN';
 
-  static public function getDebug() {
-    return self::$debug;
-  }
 
-  static public function getConnectString(): string {
-    return 'host=' . self::$host . ' port=' . self::$port . ' dbname=' . self::$dbname . ' user=' . self::$user .' password=' . self::$password;
-  }
+  // This array holds the links to be displayed when a member has logged in
+  private static $member_link_array = [
+    "Gästbok" => "guestbook.php",
+    "Meddlemssida" => "members.php"
+  ];
 
-  static public function getDbDns(){
-      $dns = "";
-      return $dns;
-  }
-
-
-
+  // This array holds the links to be displayed when a admin has logged in
+  private static $admin_link_array = [
+    "Adminsida" => "admin.php"
+  ];
 }
