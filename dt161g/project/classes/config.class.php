@@ -32,8 +32,19 @@ class Config {
     return $this->debug;
   }
 
+  // Returns string for connecting to postgres database.
+  public function getConnectString() {
+    return 'host=' . $this->host . ' port=' . $this->port . ' dbname=' . $this->dbname . ' user=' . $this->user .' password=' . $this->password;
+  }
 
-  // Member variables
+  // Debug mode
   private $debug = true;
+
+  // Connection values
+  private $host = 'studentpsql.miun.se';
+  private $port = '5432';
+  private $user = 'vize1500';
+  private $dbname = 'vize1500';
+  private $password = 'gRd6QmzSN';
 
 }

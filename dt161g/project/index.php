@@ -79,8 +79,8 @@ $adminLoggedIn = isset($_SESSION['adminLoggedIn']);
 
   <!-- area for showing pictures -->
   <section>
-    <h2>Pictures</h2>
-    <p>This is the main section</p>
+    <h2>Welcome!</h2>
+    <p>Description goes here...</p>
   </section>
 </main>
 

@@ -49,7 +49,7 @@ class DbHandler {
       $roleQuery = 'SELECT * FROM dt161g.member_role INNER JOIN dt161g.role ON member_role.role_id = role.id WHERE member_role.member_id = $1';
       $roleResult = pg_query_params($this->dbConnection, $roleQuery, [$memberId]);
       $roleResultArr = pg_fetch_all($roleResult, PGSQL_ASSOC);
-      
+
       $roles = [];
       foreach ($roleResultArr as $row) {
         array_push($roles, new Role($row['id'], $row['role'], $row['roletext']));
@@ -99,7 +99,7 @@ class DbHandler {
       $query = 'SELECT * FROM dt161g.guestbook';
       $result = pg_query($this->dbConnection, $query);
       $dbPosts =  (pg_fetch_all($result, PGSQL_ASSOC));
-    
+
       foreach ($dbPosts as $dbPost) {
         $newPost = array('name' => $dbPost['name'],
                         'text' => $dbPost['message'],
