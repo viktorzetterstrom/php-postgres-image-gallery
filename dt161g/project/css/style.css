@@ -28,7 +28,8 @@ header {
 }
 
 main {
-  min-height: 400px;
+  min-height: 500px;
+  display: flex;
 }
 
 aside {
@@ -43,8 +44,9 @@ ul {
 }
 
 section {
-  margin-left: 250px;
+  margin-left: 20px;
   padding: 20px;
+  padding-left: 40px;
   border-left: 2px solid gray;
   vertical-align: top;
   min-height: inherit;
@@ -53,5 +55,5 @@ section {
 footer {
   border-top: 2px solid gray;
   text-align: center;
-  padding: 20px;
+  padding: 10px;
 }
