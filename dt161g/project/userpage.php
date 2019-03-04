@@ -9,7 +9,7 @@
  * vize1500@student.miun.se
  ******************************************************************************/
 
-$title = "DT161G - Projekt - Användarsida"
+$title = 'DT161G - Projekt - Användarsida';
 
 /*******************************************************************************
  * HTML section starts here

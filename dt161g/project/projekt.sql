@@ -58,13 +58,13 @@ INSERT INTO dt161g.project_user_role (user_id, role_id) VALUES (2,2);
 -- ##############################################
 
 -- Create table pictures
-DROP TABLE IF EXISTS project_pictures;
+-- DROP TABLE IF EXISTS project_pictures;
 
-CREATE TABLE dt161g.project_pictures (
-  id          SERIAL PRIMARY KEY,
-  user        integer REFERENCES dt161g.project_user (id)
-)
-WITHOUT OIDS;
+-- CREATE TABLE dt161g.project_pictures (
+--   id          SERIAL PRIMARY KEY,
+--   user        integer REFERENCES dt161g.project_user (id)
+-- )
+-- WITHOUT OIDS;
 
 -- Insert pictures
 

@@ -58,7 +58,7 @@ $isAdmin = isset($_SESSION['admin']);
         <button type="button" id="logoutButton">Logout</button>
       </div>
       <p id="message"></p>
-      
+
       <h2>MENY</h2>
       <nav>
         <ul class='sidebar-links'>

@@ -2,7 +2,7 @@
 /*******************************************************************************
  * Projekt, Kurs: DT161G
  * File: images.php
- * Desc: Image page for Projekt
+ * Desc: Image page for project
  *
  * Viktor Zetterström
  * vize1500

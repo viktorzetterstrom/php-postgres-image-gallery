@@ -8,6 +8,7 @@
  * vize1500
  * vize1500@student.miun.se
  ******************************************************************************/
+declare(strict_types = 1);
 
 
 /**
@@ -16,9 +17,7 @@
 class Config {
 
   // Private constructor
-  private function __construct() {
-
-  }
+  private function __construct() {}
 
   // Singleton
   public static function Instance() {
@@ -28,5 +27,13 @@ class Config {
     }
     return $inst;
   }
+
+  public function getDebug(): bool {
+    return $this->debug;
+  }
+
+
+  // Member variables
+  private $debug = true;
 
 }

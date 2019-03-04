@@ -9,9 +9,14 @@
  * vize1500@student.miun.se
  ******************************************************************************/
 
-$title = "DT161G - Projekt";
-$author = "Viktor Zetterström";
-$authorEmail = "vize1500@student.miun.se";
+$title = 'DT161G - Projekt';
+$author = 'Viktor Zetterström';
+$authorEmail = 'vize1500@student.miun.se';
+
+// Check what kind of user is logged in.
+session_start();
+$userLoggedIn = isset($_SESSION['userLoggedIn']);
+$adminLoggedIn = isset($_SESSION['adminLoggedIn']);
 
 /*******************************************************************************
  * HTML section starts here
@@ -32,17 +37,19 @@ $authorEmail = "vize1500@student.miun.se";
 <header>
   <h1><?php echo $title ?></h1>
 
-  <!-- login form -->
+  <!-- login and logout forms -->
   <div class="login">
-    <div id="login">
-      <form id="loginForm">
-      <input type="text" placeholder="Username" name="uname" id="uname" required maxlength="10" autocomplete="off">
-      <input type="password" placeholder="Password" name="psw" id="psw" required>
-      <button type="button" id="loginButton">Log in</button>
+    <div id="login" <?php if ($userLoggedIn) echo 'style="display:none"' ?>>
+      <form id="loginForm" action="login.php" method="POST">
+        <input type="text" placeholder="Username" name="uname" id="uname" required maxlength="10" autocomplete="off">
+        <input type="password" placeholder="Password" name="psw" id="psw" required>
+        <input type="submit" id="loginButton" value="Log in">
       </form>
     </div>
-    <div id="logout">
-      <button type="button" id="logoutButton">Log out</button>
+    <div id="logout" <?php if (!$userLoggedIn) echo 'style="display:none"' ?>>
+      <form id="logoutForm" action="logout.php" method="POST">
+        <input type="submit" id="logoutButton" value="Log out">
+      </form>
     </div>
   </div>
 </header>
@@ -53,7 +60,7 @@ $authorEmail = "vize1500@student.miun.se";
   <aside>
     <h2>Navigation</h2>
     <nav>
-      <ul class='sidebar-links'>
+      <ul>
         <li>
           <a>Uno</a>
         </li>
