@@ -40,7 +40,7 @@ function processLogin(): void {
       header('location:userpage.php');
     } else {
       // If login not ok, redirect to error page.
-      header('location:login_error.php');
+      header('location:index.php');
     }
   }
 }
