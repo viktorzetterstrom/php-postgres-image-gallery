@@ -2,8 +2,56 @@
  * Projekt, Kurs: DT161G
  * File: style.css
  * Desc: Style sheets for Projekt
- * 
+ *
  * Viktor Zetterström
  * vize1500
  * vize1500@student.miun.se
  ******************************************************************************/
+
+html {
+  margin: auto;
+  font: 13px/1.2 Helvetica, Arial, sans-serif;
+  background: #EAEAEA;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid gray;
+  padding: 0 20px;
+}
+
+.login {
+  display: flex;
+  float: right;
+}
+
+main {
+  min-height: 400px;
+}
+
+aside {
+  float: left;
+  max-width: 250px;
+  padding: 20px;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+section {
+  margin-left: 250px;
+  padding: 20px;
+  border-left: 2px solid gray;
+  vertical-align: top;
+  min-height: inherit;
+}
+
+footer {
+  border-top: 2px solid gray;
+  text-align: center;
+  padding: 20px;
+}
