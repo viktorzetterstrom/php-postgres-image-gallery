@@ -58,7 +58,7 @@ class DbHandler {
 
       $roles = [];
       foreach ($roleResultArr as $row) {
-        array_push($roles, new Role($row['id'], $row['role'], $row['roletext']));
+        array_push($roles, new Role($row['id'], $row['role']));
       }
 
       if ($userResult != false) {
@@ -75,6 +75,22 @@ class DbHandler {
 
   // Create a user in database
   public function createUser(string $username, string $password, bool $isAdmin): bool {
+    // Connect
+    connect();
+
+    // Hash password
+    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+    // Create query
+    $userQuery = "INSERT INTO dt161g.project_user (username, password) VALUES ( $username, $hashedPassword)";
+
+    // Create user
+
+    // Add correct roles to user
+
+
+    // Disconnect
+    disconnect();
 
     return true;
   }

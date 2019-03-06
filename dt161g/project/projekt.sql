@@ -17,8 +17,8 @@ CREATE TABLE dt161g.project_user (
 WITHOUT OIDS;
 
 -- Create users
-INSERT INTO dt161g.project_user (username, password) VALUES ('m', 'a');
-INSERT INTO dt161g.project_user (username, password) VALUES ('a', 'a');
+INSERT INTO dt161g.project_user (username, password) VALUES ('m', '$2y$10$D2pgcOU3MeYErEH.ob4b6.V.ImHipfqzRHlXMKSaXX0HPoF8LTbeW');
+INSERT INTO dt161g.project_user (username, password) VALUES ('a', '$2y$10$y27OVVY.36wXF2cYX.fRP.5/J1B0zh6qrfFQaiVQPuQ41yW1ZuNyy');
 
 -- ##############################################
 

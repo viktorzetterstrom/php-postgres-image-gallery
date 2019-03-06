@@ -30,7 +30,11 @@ class User {
   }
 
   public function testPassword($password): bool {
-    return $this->password == $password;
+    if ($this->password != null) {
+      return password_verify($password, $this->password);
+    } else {
+      return false;
+    }
   }
 
   public function getRoles(): array {
