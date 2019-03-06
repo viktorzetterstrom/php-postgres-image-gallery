@@ -98,10 +98,31 @@ if (!$adminLoggedIn) {
     </nav>
   </aside>
 
-  <!-- area for showing pictures -->
+  <!-- Main area -->
   <section>
-    <h2>Welcome!</h2>
-    <p>Description goes here...</p>
+    <h2>Admin page</h2>
+
+    <!-- Form for creating user -->
+    <div id="createUser">
+      <form id="createForm" action="createuser.php" method="POST">
+        <h3>Create user</h3>
+        <input type="text" placeholder="Username" name="uname" id="uname" required maxlength="10" autocomplete="off">
+        <input type="password" placeholder="Password" name="psw" id="psw" required>
+        <label for="admin">Admin</label>
+        <input type="checkbox" name="admin">
+        <input type="submit" id="loginButton" value="Create">
+      </form>
+    </div>
+
+    <!-- Form for deleting user -->
+    <div id="deleteUser">
+      <form id="deleteForm" action="deleteuser.php" method="POST">
+        <h3>Delete user</h3>
+        <input type="text" placeholder="Username" name="uname" id="uname" required maxlength="10" autocomplete="off">
+        <input type="submit" id="loginButton" value="Delete">
+      </form>
+    </div>
+
   </section>
 </main>
 
