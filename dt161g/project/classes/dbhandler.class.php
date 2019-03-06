@@ -76,28 +76,41 @@ class DbHandler {
   // Create a user in database
   public function createUser(string $username, string $password, bool $isAdmin): bool {
     // Connect
-    connect();
+    $this->connect();
 
     // Hash password
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
     // Create query
-    $userQuery = "INSERT INTO dt161g.project_user (username, password) VALUES ( $username, $hashedPassword)";
+    $userQuery = "INSERT INTO dt161g.project_user (username, password) VALUES ( $1, $2) RETURNING id";
 
     // Create user
+    $userResult = pg_query_params($this->dbConnection, $userQuery, [$username, $hashedPassword]);
 
-    // Add correct roles to user
+    // if no result, return false.
+    if (!$userResult) {
+      $this->disconnect();
+      return false;
+    }
 
+    $userResultArr = pg_fetch_assoc($userResult);
+    $userId = $userResultArr['id'];
 
-    // Disconnect
-    disconnect();
+    $roleQuery = "INSERT INTO dt161g.project_user_role (user_id, role_id) VALUES($1, $2)";
+    pg_query_params($this->dbConnection, $roleQuery, [$userId, 1]);
+    // If admin is to be created, also insert that role.
+    if ($isAdmin) pg_query_params($this->dbConnection, $roleQuery, [$userId, 2]);
 
+    $this->disconnect();
     return true;
   }
 
   // Delete a user from database
   public function deleteUser(string $userName): bool {
+    $this->connect();
 
+
+    $this->disconnect();
     return true;
   }
 

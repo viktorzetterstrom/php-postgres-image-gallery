@@ -17,7 +17,7 @@ $isAdmin = isset($_POST['admin']) ? true : false;
 
 $success = DbHandler::Instance()->createUser($username, $password, $isAdmin);
 
-if (success) {
+if (success === true) {
   alertAndRedirectUser('User created', 'admin.php');
 } else {
   alertAndRedirectUser('User could not be created', 'admin.php');
