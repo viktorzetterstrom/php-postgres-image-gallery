@@ -6,35 +6,35 @@
 -- ##############################################
 
 -- Create table users
-DROP TABLE IF EXISTS dt161g.project_user;
+DROP TABLE IF EXISTS dt161g.project_user CASCADE;
 
 CREATE TABLE dt161g.project_user (
   id          SERIAL PRIMARY KEY,
   username    text NOT NULL CHECK (username <> ''),
   password    text NOT NULL CHECK (password  <> ''),
-  CONSTRAINT  unique_user UNIQUE(username)
+  CONSTRAINT  project_unique_user UNIQUE(username)
 )
 WITHOUT OIDS;
 
 -- Create users
-INSERT INTO dt161g.project_user (username, password) VALUES ('m','m');
-INSERT INTO dt161g.project_user (username, password) VALUES ('a','a');
+INSERT INTO dt161g.project_user (username, password) VALUES ('m', 'a');
+INSERT INTO dt161g.project_user (username, password) VALUES ('a', 'a');
 
 -- ##############################################
 
 -- Create table role
-DROP TABLE IF EXISTS dt161g.project_role;
+DROP TABLE IF EXISTS dt161g.project_role CASCADE;
 
 CREATE TABLE dt161g.project_role (
   id          SERIAL PRIMARY KEY,
   role        text NOT NULL CHECK (role <> ''),
-  CONSTRAINT  unique_role UNIQUE(role)
+  CONSTRAINT  project_unique_role UNIQUE(role)
 )
 WITHOUT OIDS;
 
 -- Create roles
-INSERT INTO dt161g.role (role, roletext) VALUES ('user');
-INSERT INTO dt161g.role (role, roletext) VALUES ('admin');
+INSERT INTO dt161g.project_role (role) VALUES ('user');
+INSERT INTO dt161g.project_role (role) VALUES ('admin');
 
 -- ##############################################
 
@@ -45,7 +45,7 @@ CREATE TABLE dt161g.project_user_role (
   id          SERIAL PRIMARY KEY,
   user_id     integer REFERENCES dt161g.project_user (id),
   role_id     integer REFERENCES dt161g.project_role (id),
-  CONSTRAINT  unique_user_role UNIQUE(user_id, role_id)
+  CONSTRAINT  project_unique_user_role UNIQUE(user_id, role_id)
 )
 WITHOUT OIDS;
 
@@ -71,3 +71,4 @@ INSERT INTO dt161g.project_user_role (user_id, role_id) VALUES (2,2);
 
 
 -- Create table pictures_users
+
