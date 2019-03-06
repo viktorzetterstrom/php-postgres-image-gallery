@@ -11,3 +11,6 @@
 declare(strict_types = 1);
 require_once('util.php');
 
+var_dump($_POST);
+
+header('location:admin.php');

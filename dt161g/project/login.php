@@ -40,7 +40,7 @@ function processLogin(): void {
       header('location:userpage.php');
     } else {
       // If login not ok, redirect to error page.
-      header('location:index.php');
+      alertAndRedirectUser('Could not log in, check username or password.', 'index.php');
     }
   }
 }

@@ -17,9 +17,7 @@ require_once('util.php');
 class DbHandler {
 
   // Private constructor
-  private function __construct() {
-
-  }
+  private function __construct() {}
 
   // Singleton
   public static function Instance() {
@@ -29,6 +27,10 @@ class DbHandler {
     }
     return $inst;
   }
+
+
+
+  // Public functions
 
   // Gets a user with a certain username from the database
   public function getUser($userName): User {
@@ -71,6 +73,18 @@ class DbHandler {
     }
   }
 
+  // Create a user in database
+  public function createUser(string $username, string $password, bool $isAdmin): bool {
+
+    return true;
+  }
+
+  // Delete a user from database
+  public function deleteUser(string $userName): bool {
+
+    return true;
+  }
+
   // Returns true if DbHandler is connected to database
   private function isConnected(): bool {
     if ($this->dbConnection) {
@@ -80,10 +94,16 @@ class DbHandler {
     }
   }
 
+
+
+  // Private functions.
+
+  // Connects to database
   private function connect(): void {
     $this->dbConnection = pg_connect(Config::Instance()->getConnectString());
   }
 
+  // Disconnects from database
   private function disconnect(): void {
     pg_close($this->dbConnection);
   }

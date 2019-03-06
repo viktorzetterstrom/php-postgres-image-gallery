@@ -28,3 +28,10 @@ function alertUser(string $message): void {
   echo "<script type='text/javascript'>alert('$message');</script>";
 }
 
+// Alerts user and then redirects.
+function alertAndRedirectUser(string $message, string $redirect): void {
+  echo "<script>javascript:
+  var ask = alert('" . $message . "');
+  window.location = '" . $redirect . "';
+  </script>";
+}
