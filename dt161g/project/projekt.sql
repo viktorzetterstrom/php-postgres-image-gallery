@@ -43,8 +43,8 @@ DROP TABLE IF EXISTS dt161g.project_user_role;
 
 CREATE TABLE dt161g.project_user_role (
   id          SERIAL PRIMARY KEY,
-  user_id     integer REFERENCES dt161g.project_user (id),
-  role_id     integer REFERENCES dt161g.project_role (id),
+  user_id     integer REFERENCES dt161g.project_user (id) ON DELETE CASCADE,
+  role_id     integer REFERENCES dt161g.project_role (id) ON DELETE CASCADE,
   CONSTRAINT  project_unique_user_role UNIQUE(user_id, role_id)
 )
 WITHOUT OIDS;

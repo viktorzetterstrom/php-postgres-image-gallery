@@ -11,13 +11,13 @@
 declare(strict_types = 1);
 require_once('util.php');
 
-$username = $_POST['uname'];
+$userName = $_POST['uname'];
 $password = $_POST['psw'];
 $isAdmin = isset($_POST['admin']) ? true : false;
 
-$success = DbHandler::Instance()->createUser($username, $password, $isAdmin);
+$success = DbHandler::Instance()->createUser($userName, $password, $isAdmin);
 
-if (success === true) {
+if ($success) {
   alertAndRedirectUser('User created', 'admin.php');
 } else {
   alertAndRedirectUser('User could not be created', 'admin.php');

@@ -74,44 +74,68 @@ class DbHandler {
   }
 
   // Create a user in database
-  public function createUser(string $username, string $password, bool $isAdmin): bool {
+  public function createUser(string $userName, string $password, bool $isAdmin): bool {
     // Connect
     $this->connect();
 
-    // Hash password
-    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+    if ($this->isConnected()) {
 
-    // Create query
-    $userQuery = "INSERT INTO dt161g.project_user (username, password) VALUES ( $1, $2) RETURNING id";
+      // Hash password
+      $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-    // Create user
-    $userResult = pg_query_params($this->dbConnection, $userQuery, [$username, $hashedPassword]);
+      // Create query
+      $userQuery = "INSERT INTO dt161g.project_user (username, password) VALUES ( $1, $2) RETURNING id";
 
-    // if no result, return false.
-    if (!$userResult) {
+      // Create user
+      $userResult = pg_query_params($this->dbConnection, $userQuery, [$userName, $hashedPassword]);
+
+      // if no result, return false.
+      if (!$userResult) {
+        $this->disconnect();
+        return false;
+      }
+
+      $userResultArr = pg_fetch_assoc($userResult);
+      $userId = $userResultArr['id'];
+
+      $roleQuery = "INSERT INTO dt161g.project_user_role (user_id, role_id) VALUES($1, $2)";
+      pg_query_params($this->dbConnection, $roleQuery, [$userId, 1]);
+      // If admin is to be created, also insert that role.
+      if ($isAdmin) pg_query_params($this->dbConnection, $roleQuery, [$userId, 2]);
+
+      pg_free_result($userResult);
       $this->disconnect();
+      return true;
+    } else {
       return false;
     }
-
-    $userResultArr = pg_fetch_assoc($userResult);
-    $userId = $userResultArr['id'];
-
-    $roleQuery = "INSERT INTO dt161g.project_user_role (user_id, role_id) VALUES($1, $2)";
-    pg_query_params($this->dbConnection, $roleQuery, [$userId, 1]);
-    // If admin is to be created, also insert that role.
-    if ($isAdmin) pg_query_params($this->dbConnection, $roleQuery, [$userId, 2]);
-
-    $this->disconnect();
-    return true;
   }
 
   // Delete a user from database
-  public function deleteUser(string $userName): bool {
+  public function deleteUser($userName): bool {
+    // It is not possible to delete current logged in user.
+    session_start();
+    if ($_SESSION['userLoggedIn'] == $userName) {
+      return false;
+    }
+
     $this->connect();
 
+    if ($this->isConnected()) {
+      $deletionQuery = "DELETE FROM dt161g.project_user WHERE username = $1";
+      $deletionResult = pg_query_params($this->dbConnection, $deletionQuery, [$userName]);
+      $affectedRows = pg_affected_rows($deletionResult);
 
-    $this->disconnect();
-    return true;
+      $this->disconnect();
+      if ($affectedRows > 0) {
+        pg_free_result($deletionResult);
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
   }
 
   // Returns true if DbHandler is connected to database

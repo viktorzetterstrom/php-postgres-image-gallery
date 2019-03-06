@@ -110,7 +110,7 @@ if (!$adminLoggedIn) {
         <input type="password" placeholder="Password" name="psw" id="psw" required>
         <label for="admin">Admin</label>
         <input type="checkbox" name="admin" id="admin">
-        <input type="submit" id="loginButton" value="Create">
+        <input type="submit" id="createButton" value="Create">
       </form>
     </div>
 
@@ -119,7 +119,7 @@ if (!$adminLoggedIn) {
       <form id="deleteForm" action="deleteuser.php" method="POST">
         <h3>Delete user</h3>
         <input type="text" placeholder="Username" name="uname" id="uname" required maxlength="10" autocomplete="off">
-        <input type="submit" id="loginButton" value="Delete">
+        <input type="submit" id="deleteButton" value="Delete">
       </form>
     </div>
 
