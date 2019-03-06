@@ -2,14 +2,14 @@
 /*******************************************************************************
  * Projekt, Kurs: DT161G
  * File: index.php
- * Desc: Start page for Projekt
+ * Desc: Start page for project
  *
  * Viktor Zetterström
  * vize1500
  * vize1500@student.miun.se
  ******************************************************************************/
 
-$title = 'DT161G - Projekt';
+$title = 'DT161G - Projekt - Start';
 $author = 'Viktor Zetterström';
 $authorEmail = 'vize1500@student.miun.se';
 
@@ -17,6 +17,12 @@ $authorEmail = 'vize1500@student.miun.se';
 session_start();
 $userLoggedIn = isset($_SESSION['userLoggedIn']);
 $adminLoggedIn = isset($_SESSION['adminLoggedIn']);
+
+// Get username.
+$username = "No user is set!";
+if ($userLoggedIn) {
+    $username = $_SESSION['userLoggedIn'];
+}
 
 /*******************************************************************************
  * HTML section starts here
@@ -35,7 +41,18 @@ $adminLoggedIn = isset($_SESSION['adminLoggedIn']);
 
 <!-- header with log in form -->
 <header>
-  <h1><?php echo $title ?></h1>
+
+  <!-- Title and navigational links -->
+  <div id="navigation">
+    <h1><?php echo $title ?></h1>
+    <div class="links">
+      <a href="index.php">Start</a>
+      <?PHP if ($userLoggedIn) echo '<a href="images.php">Images</a>' ?>
+      <?PHP if ($userLoggedIn) echo '<a href="userpage.php">User</a>' ?>
+      <?PHP if ($adminLoggedIn) echo '<a href="admin.php">Admin</a>' ?>
+    </div>
+  </div>
+
 
   <!-- login and logout forms -->
   <div class="login">
@@ -48,6 +65,7 @@ $adminLoggedIn = isset($_SESSION['adminLoggedIn']);
     </div>
     <div id="logout" <?php if (!$userLoggedIn) echo 'style="display:none"' ?>>
       <form id="logoutForm" action="logout.php" method="POST">
+        <label for="logoutButton">Logged in as: <?PHP echo $username ?></label>
         <input type="submit" id="logoutButton" value="Log out">
       </form>
     </div>
