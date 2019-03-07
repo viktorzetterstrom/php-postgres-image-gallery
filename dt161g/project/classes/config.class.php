@@ -29,6 +29,10 @@ class Config {
     return $inst;
   }
 
+
+  // Public functions
+
+  // Getter for debug
   public function getDebug(): bool {
     return $this->debug;
   }
@@ -37,6 +41,9 @@ class Config {
   public function getConnectString() {
     return 'host=' . $this->host . ' port=' . $this->port . ' dbname=' . $this->dbname . ' user=' . $this->user .' password=' . $this->password;
   }
+
+
+  // Member variables
 
   // Debug mode
   private $debug = true;

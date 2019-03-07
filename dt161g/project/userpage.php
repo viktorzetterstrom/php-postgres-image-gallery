@@ -102,8 +102,55 @@ if (!$userLoggedIn) {
 
   <!-- area for showing pictures -->
   <section>
-    <h2>Welcome!</h2>
-    <p>Description goes here...</p>
+    <h2>User page</h2>
+
+    <!-- Form for uploading image -->
+    <div id="uploadImage">
+      <form id="uploadForm" action="uploadImage.php" method="POST">
+        <h3>Upload image</h3>
+        <input type="file" id="fileUpload" name="fileUpload">
+
+        <select id="chooseImageCategorySelect">
+          <option value="">Choose image category</option>
+          <option value="dog">Dog</option>
+          <option value="cat">Cat</option>
+          <option value="hamster">Hamster</option>
+          <option value="parrot">Parrot</option>
+          <option value="spider">Spider</option>
+          <option value="goldfish">Goldfish</option>
+        </select>
+
+        <input type="submit" id="uploadButton" value="Upload">
+      </form>
+    </div>
+
+    <!-- Form for creating image categories -->
+    <div id="createCategory">
+      <form id="createCategoryForm" action="createCategory.php" method="POST">
+        <h3>Create category</h3>
+        <input type="text" placeholder="Category name" name="cname" id="cname" required maxlength="10" autocomplete="off">
+        <input type="submit" id="createCategoryButton" value="Create category">
+      </form>
+    </div>
+
+    <!-- Form for deleting image categories -->
+    <div id="deleteCategory">
+      <form id="deleteCategoryForm" action="deleteCategory.php" method="POST">
+        <h3>Delete category</h3>
+
+        <select id="deleteCategorySelect">
+          <option value="">Choose image category</option>
+          <option value="dog">Dog</option>
+          <option value="cat">Cat</option>
+          <option value="hamster">Hamster</option>
+          <option value="parrot">Parrot</option>
+          <option value="spider">Spider</option>
+          <option value="goldfish">Goldfish</option>
+        </select>
+
+        <input type="submit" id="deleteCategoryButton" value="Delete category">
+      </form>
+    </div>
   </section>
 </main>
 

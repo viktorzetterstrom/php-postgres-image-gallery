@@ -15,4 +15,13 @@
  */
 class Image {
 
+  // Constructor
+  public function __construct() {
+
+  }
+
+
+  // Member variables
+  private $imageData;
+  private $category;
 }
