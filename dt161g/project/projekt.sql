@@ -58,10 +58,11 @@ INSERT INTO dt161g.project_user_role (user_id, role_id) VALUES (2,2);
 -- ##############################################
 
 -- Create table category
-DROP TABLE IF EXISTS dt161g.project_category;
+DROP TABLE IF EXISTS dt161g.project_category CASCADE;
 
 CREATE TABLE dt161g.project_category (
   id          SERIAL PRIMARY KEY,
+  user_id     INTEGER REFERENCES dt161g.project_user(id) ON DELETE CASCADE,
   name        TEXT NOT NULL
 )
 WITHOUT OIDS;
