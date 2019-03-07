@@ -27,7 +27,7 @@ DROP TABLE IF EXISTS dt161g.project_role CASCADE;
 
 CREATE TABLE dt161g.project_role (
   id          SERIAL PRIMARY KEY,
-  role        text NOT NULL CHECK (role <> ''),
+  role        TEXT NOT NULL CHECK (role <> ''),
   CONSTRAINT  project_unique_role UNIQUE(role)
 )
 WITHOUT OIDS;
@@ -43,8 +43,8 @@ DROP TABLE IF EXISTS dt161g.project_user_role;
 
 CREATE TABLE dt161g.project_user_role (
   id          SERIAL PRIMARY KEY,
-  user_id     integer REFERENCES dt161g.project_user (id) ON DELETE CASCADE,
-  role_id     integer REFERENCES dt161g.project_role (id) ON DELETE CASCADE,
+  user_id     INTEGER REFERENCES dt161g.project_user (id) ON DELETE CASCADE,
+  role_id     INTEGER REFERENCES dt161g.project_role (id) ON DELETE CASCADE,
   CONSTRAINT  project_unique_user_role UNIQUE(user_id, role_id)
 )
 WITHOUT OIDS;
@@ -57,18 +57,27 @@ INSERT INTO dt161g.project_user_role (user_id, role_id) VALUES (2,2);
 
 -- ##############################################
 
--- Create table pictures
--- DROP TABLE IF EXISTS project_pictures;
+-- Create table category
+DROP TABLE IF EXISTS dt161g.project_category;
 
--- CREATE TABLE dt161g.project_pictures (
---   id          SERIAL PRIMARY KEY,
---   user        integer REFERENCES dt161g.project_user (id)
--- )
--- WITHOUT OIDS;
-
--- Insert pictures
+CREATE TABLE dt161g.project_category (
+  id          SERIAL PRIMARY KEY,
+  name        TEXT NOT NULL
+)
+WITHOUT OIDS;
 
 
+-- ##############################################
 
--- Create table pictures_users
+-- Create table images
+DROP TABLE IF EXISTS dt161g.project_image;
 
+CREATE TABLE dt161g.project_image (
+  id          SERIAL PRIMARY KEY,
+  checksum    INTEGER,
+  imageData   BYTEA NOT NULL,
+  category_id     INTEGER REFERENCES dt161g.project_category (id) ON DELETE CASCADE,
+  user_id     INTEGER REFERENCES dt161g.project_user (id) ON DELETE CASCADE,
+  CONSTRAINT  project_unique_image UNIQUE(checksum)
+)
+WITHOUT OIDS;

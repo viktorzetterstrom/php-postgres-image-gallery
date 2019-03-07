@@ -22,6 +22,8 @@ class Image {
 
 
   // Member variables
+  private $checksum;
   private $imageData;
   private $category;
+  private $user;
 }
