@@ -2,7 +2,8 @@
 /*******************************************************************************
  * Projekt, Kurs: DT161G
  * File: util.php
- * Desc: Util file for project
+ * Desc: Contains utility functions used on many places in the project. Also
+ * does the importing of all the classes.
  *
  * Viktor Zetterström
  * vize1500

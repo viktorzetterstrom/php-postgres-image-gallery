@@ -2,7 +2,8 @@
 /*******************************************************************************
  * Projekt, Kurs: DT161G
  * File: userpage.php
- * Desc: Userpage page for Projekt
+ * Desc: Page only visible when logged in as user. Allows uploading of images
+ * and creation of categories.
  *
  * Viktor Zetterström
  * vize1500

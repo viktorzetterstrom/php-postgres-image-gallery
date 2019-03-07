@@ -2,7 +2,7 @@
 /*******************************************************************************
  * Projekt, Kurs: DT161G
  * File: logout.php
- * Desc: Logout page for project
+ * Desc: Logout logic for logging out.
  *
  * Viktor Zetterström
  * vize1500

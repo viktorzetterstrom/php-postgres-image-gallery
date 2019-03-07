@@ -2,7 +2,7 @@
 /*******************************************************************************
  * Projekt, Kurs: DT161G
  * File: image.class.php
- * Desc: Class Image for Projekt
+ * Desc: Represents an image uploaded to the page.
  *
  * Viktor Zetterström
  * vize1500

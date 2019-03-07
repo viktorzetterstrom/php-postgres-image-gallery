@@ -2,7 +2,7 @@
 /*******************************************************************************
  * Projekt, Kurs: DT161G
  * File: createuser.php
- * Desc: Creating users for project
+ * Desc: Creating users for project. See DbHandler for implementation.
  *
  * Viktor Zetterström
  * vize1500

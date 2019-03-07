@@ -2,7 +2,7 @@
 /*******************************************************************************
  * Projekt, Kurs: DT161G
  * File: images.php
- * Desc: Image page for project
+ * Desc: Page that displays images of different users.
  *
  * Viktor Zetterström
  * vize1500

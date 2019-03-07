@@ -2,7 +2,8 @@
 /*******************************************************************************
  * Projekt, Kurs: DT161G
  * File: user.class.php
- * Desc: Class User for Projekt
+ * Desc: Class User, represents a user of the website. A user can an additional
+ * role as an admin, which gives more privileges.
  *
  * Viktor Zetterström
  * vize1500

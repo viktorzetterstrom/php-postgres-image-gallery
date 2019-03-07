@@ -2,7 +2,7 @@
 /*******************************************************************************
  * Projekt, Kurs: DT161G
  * File: index.php
- * Desc: Start page for project
+ * Desc: Start page for the site.
  *
  * Viktor Zetterström
  * vize1500

@@ -2,7 +2,8 @@
 /*******************************************************************************
  * Projekt, Kurs: DT161G
  * File: config.class.php
- * Desc: Class Config for Projekt
+ * Desc: Singleton class that contains the settings for the project. Specifies
+ * the connection to the database and if debug mode is to be used.
  *
  * Viktor Zetterström
  * vize1500

@@ -2,7 +2,7 @@
 /*******************************************************************************
  * Projekt, Kurs: DT161G
  * File: login.php
- * Desc: Login page for project
+ * Desc: Contains the login logic used to verify a user that tries to log in.
  *
  * Viktor Zetterström
  * vize1500

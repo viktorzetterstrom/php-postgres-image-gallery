@@ -2,7 +2,8 @@
 /*******************************************************************************
  * Projekt, Kurs: DT161G
  * File: deleteuser.php
- * Desc: Deleting users for project
+ * Desc: Deleting users for project. See DbHandler for exact implemnetation of
+ * deleting function.
  *
  * Viktor Zetterström
  * vize1500

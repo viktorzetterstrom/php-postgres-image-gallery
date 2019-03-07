@@ -2,7 +2,8 @@
 /*******************************************************************************
  * Projekt, Kurs: DT161G
  * File: dbhandler.class.php
- * Desc: Class DbHandler for project
+ * Desc: Class DbHandler, handles all the calls and connections to the database.
+ * Used for creating, getting and deleting users and pictures.
  *
  * Viktor Zetterström
  * vize1500
@@ -119,9 +120,11 @@ class DbHandler {
       return false;
     }
 
+    // Connect to database
     $this->connect();
-
     if ($this->isConnected()) {
+
+      // Run deletion query, use affected rows to see if change was made.
       $deletionQuery = "DELETE FROM dt161g.project_user WHERE username = $1";
       $deletionResult = pg_query_params($this->dbConnection, $deletionQuery, [$userName]);
       $affectedRows = pg_affected_rows($deletionResult);
@@ -138,6 +141,8 @@ class DbHandler {
     }
   }
 
+  // Private functions.
+
   // Returns true if DbHandler is connected to database
   private function isConnected(): bool {
     if ($this->dbConnection) {
@@ -146,10 +151,6 @@ class DbHandler {
       return false;
     }
   }
-
-
-
-  // Private functions.
 
   // Connects to database
   private function connect(): void {

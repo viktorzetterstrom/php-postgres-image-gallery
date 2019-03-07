@@ -2,7 +2,7 @@
 /*******************************************************************************
  * Projekt, Kurs: DT161G
  * File: role.class.php
- * Desc: Class Role for project
+ * Desc: Represents the different roles a user can have.
  *
  * Viktor Zetterström
  * vize1500

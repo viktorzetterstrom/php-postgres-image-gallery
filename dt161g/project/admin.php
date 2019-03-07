@@ -2,7 +2,8 @@
 /*******************************************************************************
  * Projekt, Kurs: DT161G
  * File: admin.php
- * Desc: Admin file for project
+ * Desc: Contains functions for a an admin user to create and delete users. This
+ * page is only accessible with admin privileges.
  *
  * Viktor Zetterström
  * vize1500
