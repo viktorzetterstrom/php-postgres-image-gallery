@@ -76,6 +76,11 @@ class DbHandler {
 
   // Create a user in database
   public function createUser(string $userName, string $password, bool $isAdmin): bool {
+    // Do not allow creation of users that have html-tags in their name.
+    if ($userName != strip_tags($userName)) {
+      return false;
+    }
+
     // Connect
     $this->connect();
 
