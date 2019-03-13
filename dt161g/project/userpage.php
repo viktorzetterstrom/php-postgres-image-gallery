@@ -113,7 +113,7 @@ if (!$userLoggedIn) {
     <div id="createCategory">
       <form id="createCategoryForm" action="createcategory.php" method="POST">
         <h3>Create category</h3>
-        <input type="text" placeholder="Category name" name="cname" id="cname" required maxlength="10" autocomplete="off">
+        <input type="text" placeholder="Category name" name="cname" id="cname" required maxlength="10" autocomplete="off" required>
         <input type="submit" id="createCategoryButton" value="Create category">
       </form>
     </div>
@@ -121,11 +121,11 @@ if (!$userLoggedIn) {
     <!-- Only show upload and deletion if categories exist -->
     <!-- Form for uploading image -->
     <div id="uploadImage" <?php if ($categoryCount == 0) echo 'style="display:none"' ?>>
-      <form id="uploadForm" action="uploadImage.php" method="POST">
+      <form id="uploadForm" action="addimage.php" method="POST" enctype="multipart/form-data">
         <h3>Upload image</h3>
-        <input type="file" id="fileUpload" name="fileUpload">
+        <input type="file" id="aimage" name="aimage" required>
 
-        <select id="chooseImageCategorySelect" name="cname">
+        <select id="chooseImageCategorySelect" name="cname" required>
           <option value="">Choose image category</option>
           <?PHP
             foreach ($categories as $category) {
@@ -143,7 +143,7 @@ if (!$userLoggedIn) {
       <form id="deleteCategoryForm" action="deletecategory.php" method="POST">
         <h3>Delete category</h3>
 
-        <select id="deleteCategorySelect" name="cname">
+        <select id="deleteCategorySelect" name="cname" required>
           <option value="">Choose image category</option>
           <?PHP
             foreach ($categories as $category) {

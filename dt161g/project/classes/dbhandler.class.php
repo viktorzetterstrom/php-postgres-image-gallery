@@ -261,7 +261,7 @@ class DbHandler {
   // Checks that a string only contains valid chars. Used to verify names of
   // categories and users upon creation.
   private function verifyText(string $text): bool {
-    if (preg_match('^\w{1,}$', $text)) {
+    if (preg_match('/^\w{1,}$/', $text)) {
       return true;
     } else {
       return false;
