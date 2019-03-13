@@ -63,7 +63,8 @@ DROP TABLE IF EXISTS dt161g.project_category CASCADE;
 CREATE TABLE dt161g.project_category (
   id          SERIAL PRIMARY KEY,
   user_id     INTEGER REFERENCES dt161g.project_user(id) ON DELETE CASCADE,
-  name        TEXT NOT NULL
+  name        TEXT NOT NULL,
+  CONSTRAINT  project_unique_category UNIQUE(user_id, name)
 )
 WITHOUT OIDS;
 
