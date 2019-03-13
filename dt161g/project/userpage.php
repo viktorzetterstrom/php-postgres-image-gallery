@@ -9,7 +9,8 @@
  * vize1500
  * vize1500@student.miun.se
  ******************************************************************************/
-
+declare(strict_types = 1);
+require_once("util.php");
 
 $title = 'DT161G - Projekt - User';
 $author = 'Viktor Zetterström';
@@ -21,10 +22,14 @@ $userLoggedIn = isset($_SESSION['userLoggedIn']);
 $adminLoggedIn = isset($_SESSION['adminLoggedIn']);
 
 // Get username.
-$username = "No user is set!";
+$userName = "No user is set!";
 if ($userLoggedIn) {
-    $username = $_SESSION['userLoggedIn'];
+    $userName = $_SESSION['userLoggedIn'];
 }
+
+// Get categories associated with user.
+$categories = DbHandler::Instance()->getCategoriesForUser($userName);
+$categoryCount = count($categories);
 
 // If user is not logged in, redirect to index.php
 if (!$userLoggedIn) {
@@ -70,7 +75,7 @@ if (!$userLoggedIn) {
     </div>
     <div id="logout" <?php if (!$userLoggedIn) echo 'style="display:none"' ?>>
       <form id="logoutForm" action="logout.php" method="POST">
-        <label for="logoutButton">Logged in as: <?PHP echo $username ?></label>
+        <label for="logoutButton">Logged in as: <?PHP echo $userName ?></label>
         <input type="submit" id="logoutButton" value="Log out">
       </form>
     </div>
@@ -104,48 +109,47 @@ if (!$userLoggedIn) {
   <section>
     <h2>User page</h2>
 
-    <!-- Form for uploading image -->
-    <div id="uploadImage">
-      <form id="uploadForm" action="uploadImage.php" method="POST">
-        <h3>Upload image</h3>
-        <input type="file" id="fileUpload" name="fileUpload">
-
-        <select id="chooseImageCategorySelect">
-          <option value="">Choose image category</option>
-          <option value="dog">Dog</option>
-          <option value="cat">Cat</option>
-          <option value="hamster">Hamster</option>
-          <option value="parrot">Parrot</option>
-          <option value="spider">Spider</option>
-          <option value="goldfish">Goldfish</option>
-        </select>
-
-        <input type="submit" id="uploadButton" value="Upload">
-      </form>
-    </div>
-
     <!-- Form for creating image categories -->
     <div id="createCategory">
-      <form id="createCategoryForm" action="createCategory.php" method="POST">
+      <form id="createCategoryForm" action="createcategory.php" method="POST">
         <h3>Create category</h3>
         <input type="text" placeholder="Category name" name="cname" id="cname" required maxlength="10" autocomplete="off">
         <input type="submit" id="createCategoryButton" value="Create category">
       </form>
     </div>
 
+    <!-- Only show upload and deletion if categories exist -->
+    <!-- Form for uploading image -->
+    <div id="uploadImage" <?php if ($categoryCount == 0) echo 'style="display:none"' ?>>
+      <form id="uploadForm" action="uploadImage.php" method="POST">
+        <h3>Upload image</h3>
+        <input type="file" id="fileUpload" name="fileUpload">
+
+        <select id="chooseImageCategorySelect" name="cname">
+          <option value="">Choose image category</option>
+          <?PHP
+            foreach ($categories as $category) {
+              echo "<option value=$category>$category</option>";
+            }
+          ?>
+        </select>
+
+        <input type="submit" id="uploadButton" value="Upload">
+      </form>
+    </div>
+
     <!-- Form for deleting image categories -->
-    <div id="deleteCategory">
-      <form id="deleteCategoryForm" action="deleteCategory.php" method="POST">
+    <div id="deleteCategory" <?php if ($categoryCount == 0) echo 'style="display:none"' ?>>
+      <form id="deleteCategoryForm" action="deletecategory.php" method="POST">
         <h3>Delete category</h3>
 
-        <select id="deleteCategorySelect">
+        <select id="deleteCategorySelect" name="cname">
           <option value="">Choose image category</option>
-          <option value="dog">Dog</option>
-          <option value="cat">Cat</option>
-          <option value="hamster">Hamster</option>
-          <option value="parrot">Parrot</option>
-          <option value="spider">Spider</option>
-          <option value="goldfish">Goldfish</option>
+          <?PHP
+            foreach ($categories as $category) {
+              echo "<option value=$category>$category</option>";
+            }
+          ?>
         </select>
 
         <input type="submit" id="deleteCategoryButton" value="Delete category">

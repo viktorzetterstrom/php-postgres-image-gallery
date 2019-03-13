@@ -11,6 +11,13 @@
 declare(strict_types = 1);
 require_once('util.php');
 
+// If admin is not logged in, redirect to index.php
+session_start();
+$adminLoggedIn = isset($_SESSION['adminLoggedIn']);
+if (!$adminLoggedIn) {
+  header("location:index.php");
+}
+
 $userName = $_POST['uname'];
 $password = $_POST['psw'];
 $isAdmin = isset($_POST['admin']) ? true : false;
