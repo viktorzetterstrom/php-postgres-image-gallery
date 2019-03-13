@@ -38,12 +38,19 @@ class Config {
   }
 
   // Returns string for connecting to postgres database.
-  public function getConnectString() {
+  public function getConnectString(): string {
     return 'host=' . $this->host . ' port=' . $this->port . ' dbname=' . $this->dbname . ' user=' . $this->user .' password=' . $this->password;
   }
 
+  // Returns suported mimes.
+  public function getSupportedMimes(): array {
+    return $this->supportedMimes;
+  }
 
   // Member variables
+
+  // Supported image formats
+  private $supportedMimes = ['image/gif', 'image/jpeg', 'image/png', 'image/tiff'];
 
   // Debug mode
   private $debug = true;

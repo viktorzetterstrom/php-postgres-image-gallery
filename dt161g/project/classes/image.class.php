@@ -16,14 +16,42 @@
 class Image {
 
   // Constructor
-  public function __construct() {
-
+  public function __construct(string $userName,
+                              string $category,
+                              string $imageData,
+                              string $checksum,
+                              string $mime,
+                              array $exif) {
+    $this->userName = $userName;
+    $this->category = $category;
+    $this->imageData = $imageData;
+    $this->checksum = $checksum;
+    $this->mime = $mime;
+    $this->exif = $exif;
   }
 
+  // Getters for member variables
+  public function getUserName(): string {
+    return $this->userName;
+  }
+  public function getCategory(): string {
+    return $this->category;
+  }
+  public function getImageData(): string {
+    return $this->imageData;
+  }
+  public function getMime(): string {
+    return $this->mime;
+  }
+  public function getExif(): array {
+    return $this->exif;
+  }
 
   // Member variables
-  private $checksum;
-  private $imageData;
+  private $userName;
   private $category;
-  private $user;
+  private $imageData;
+  private $checksum;
+  private $mime;
+  private $exif;
 }

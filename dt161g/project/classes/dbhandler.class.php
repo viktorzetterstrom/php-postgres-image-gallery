@@ -220,12 +220,6 @@ class DbHandler {
     return array();
   }
 
-  // Function that gets all images within a certain category
-  public function getImagesWithCategory(string $categoryName): array {
-
-    return array();
-  }
-
   // Function that deletes a certain category
   public function deleteCategory(string $categoryName, string $userName): bool {
     $this->connect();
@@ -253,6 +247,16 @@ class DbHandler {
       }
     }
     return true;
+  }
+
+  public function addImage(Image $image): bool {
+
+    return true;
+  }
+
+  public function deleteImage(string $checksum): bool {
+
+    return false;
   }
 
 
