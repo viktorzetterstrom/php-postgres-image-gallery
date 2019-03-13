@@ -154,7 +154,7 @@ class DbHandler {
       // Get user id
       $userId = $this->getUserId($userName);
 
-      if ($userId == null) {
+      if ($userId == "") {
         $this->disconnect();
         return false;
       }
@@ -189,8 +189,28 @@ class DbHandler {
 
   // Function that returns an array with all categories connected to a specific
   // user
-  public function getCategories(string $userName): array {
+  public function getCategoriesForUser(string $userName): array {
+    $this->connect();
 
+    if ($this->isConnected()) {
+      $userId = $this->getUserId($userName);
+
+      if ($userId == "") {
+        $this->disconnect();
+        return array();
+      }
+
+      $categoryQuery = "SELECT name FROM dt161g.project_category WHERE user_id=$1";
+      $categoryResult = pg_query_params($this->dbConnection, $categoryQuery, [$userId]);
+      $categories = [];
+      while ($categoryName = pg_fetch_array($categoryResult)) {
+        array_push($categories, $categoryName['name']);
+      }
+      pg_free_result($categoryResult);
+      $this->disconnect();
+
+      return $categories;
+    }
 
     return array();
   }
@@ -208,7 +228,7 @@ class DbHandler {
     if ($this->isConnected()) {
       $userId = $this->getUserId($userName);
 
-      if ($userId == null) {
+      if ($userId == "") {
         $this->disconnect();
         return false;
       }
@@ -233,26 +253,20 @@ class DbHandler {
 
   // Private functions.
 
-  // Gets a user id
+  // Gets a user id. Assumes connection has been made to the database.
   private function getUserId(string $userName): string {
-    $this->connect();
+    // Get user id
+    $userQuery = "SELECT id FROM dt161g.project_user WHERE username=$1";
+    $userResult = pg_query_params($this->dbConnection, $userQuery, [$userName]);
+    $userResultArr = pg_fetch_array($userResult);
+    pg_free_result($userResult);
 
-    if ($this->isConnected()) {
-      // Get user id
-      $userQuery = "SELECT id FROM dt161g.project_user WHERE username=$1";
-      $userResult = pg_query_params($this->dbConnection, $userQuery, [$userName]);
-      $userResultArr = pg_fetch_array($userResult);
-      pg_free_result($userResult);
-
-      // If there is no such user, return null.
-      if (!$userResultArr) {
-        $this->disconnect();
-        return null;
-      } else {
-        return $userResultArr['id'];
-      }
+    // If there is no such user, return null.
+    if (!$userResultArr) {
+      return "";
+    } else {
+      return $userResultArr['id'];
     }
-    return null;
   }
 
   // Returns true if DbHandler is connected to database
