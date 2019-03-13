@@ -77,7 +77,7 @@ class DbHandler {
   // Create a user in database
   public function createUser(string $userName, string $password, bool $isAdmin): bool {
     // Do not allow creation of users that have html-tags in their name.
-    if ($userName != strip_tags($userName)) {
+    if (!$this->verifyText($userName)) {
       return false;
     }
 
@@ -147,6 +147,11 @@ class DbHandler {
 
   // Function that creates a category
   public function createCategory(string $categoryName, string $userName): bool {
+    // Do not allow category names that contains unsafe chars.
+    if (!$this->verifyText($categoryName)) {
+      return false;
+    }
+
     // Connect
     $this->connect();
 
@@ -252,6 +257,16 @@ class DbHandler {
 
 
   // Private functions.
+
+  // Checks that a string only contains valid chars. Used to verify names of
+  // categories and users upon creation.
+  private function verifyText(string $text): bool {
+    if (preg_match('^\w{1,}$', $text)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   // Gets a user id. Assumes connection has been made to the database.
   private function getUserId(string $userName): string {
