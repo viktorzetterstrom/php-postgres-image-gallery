@@ -49,11 +49,9 @@ if (in_array($mimeType, $supportedMimes, true)) {
   // Try to add image to database
   $success = DbHandler::Instance()->addImage($image);
 
-  var_dump($success);
-  // if ($success) {
-
-  // } else {
-
-  // }
-
+  if ($success) {
+    alertAndRedirectUser("Image added to database", "userpage.php");
+  } else {
+    alertAndRedirectUser("Could not add image to database", "userpage.php");
+  }
 }

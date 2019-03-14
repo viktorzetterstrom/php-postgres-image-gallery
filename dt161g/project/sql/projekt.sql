@@ -82,6 +82,6 @@ CREATE TABLE dt161g.project_image (
   date        TEXT NOT NULL,
   category_id INTEGER REFERENCES dt161g.project_category (id) ON DELETE CASCADE,
   user_id     INTEGER REFERENCES dt161g.project_user (id) ON DELETE CASCADE,
-  CONSTRAINT  project_uniqe_image UNIQUE(checksum)
+  CONSTRAINT  project_uniqe_image UNIQUE(checksum, user_id)
 )
 WITHOUT OIDS;

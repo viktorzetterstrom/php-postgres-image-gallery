@@ -276,12 +276,13 @@ class DbHandler {
       $date = $image->getDate();
 
       // See if image with same checksum already exists
-      $checkImageQuery = "SELECT checksum FROM dt161g.project_image WHERE checksum=$1";
-      $checkImageResult = pg_query_params($this->dbConnection, $checkImageQuery, [$checksum]);
+      $checkImageQuery = "SELECT checksum FROM dt161g.project_image WHERE checksum=$1 AND user_id=$2";
+      $checkImageResult = pg_query_params($this->dbConnection, $checkImageQuery, [$checksum, $userId]);
       $checkImageResultArr = pg_fetch_array($checkImageResult);
       pg_free_result($checkImageResult);
       // If it exists, return false
       if ($checkImageResultArr) {
+
         $this->disconnect();
         return false;
       }
