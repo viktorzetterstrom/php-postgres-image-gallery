@@ -33,15 +33,23 @@ if (in_array($mimeType, $supportedMimes, true)) {
   $userName = $_SESSION['userLoggedIn'];
   $category = $_POST['cname'];
   $imageData = base64_encode(file_get_contents($file));
-  $exif = @exif_read_data($file);
   $checksum = md5_file($file);
 
+  // Get date from exif
+  $exif = @exif_read_data($file);
+  if (isset($exif['DateTimeOriginal'])) {
+    $date =  date('Y-m-d H:i:s', strtotime($exif['DateTimeOriginal']));
+  } else {
+    $date = date('Y-m-d H:i:s', 0);
+  }
+
   // Create new image
-  $image = new Image($userName, $category, $imageData, $checksum, $mimeType, $exif);
+  $image = new Image($userName, $category, $imageData, $checksum, $mimeType, $date);
 
   // Try to add image to database
-  // $success = DbHandler::Instance()->addImage($image);
+  $success = DbHandler::Instance()->addImage($image);
 
+  var_dump($success);
   // if ($success) {
 
   // } else {

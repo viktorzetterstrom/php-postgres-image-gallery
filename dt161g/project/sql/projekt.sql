@@ -76,12 +76,12 @@ DROP TABLE IF EXISTS dt161g.project_image;
 
 CREATE TABLE dt161g.project_image (
   id          SERIAL PRIMARY KEY,
-  imageData   BYTEA NOT NULL,
+  image_data   BYTEA NOT NULL,
   checksum    TEXT NOT NULL,
   mime        TEXT NOT NULL,
   date        TEXT NOT NULL,
   category_id INTEGER REFERENCES dt161g.project_category (id) ON DELETE CASCADE,
   user_id     INTEGER REFERENCES dt161g.project_user (id) ON DELETE CASCADE,
-  CONSTRAINT  project_unique_image UNIQUE(checksum)
+  CONSTRAINT  project_uniqe_image UNIQUE(checksum)
 )
 WITHOUT OIDS;

@@ -56,6 +56,8 @@ class DbHandler {
       $roleQuery = 'SELECT * FROM dt161g.project_user_role INNER JOIN dt161g.project_role ON project_user_role.role_id = project_role.id WHERE project_user_role.user_id = $1';
       $roleResult = pg_query_params($this->dbConnection, $roleQuery, [$userId]);
       $roleResultArr = pg_fetch_all($roleResult, PGSQL_ASSOC);
+      pg_free_result($userResult);
+      pg_free_result($roleResult);
 
       $roles = [];
       foreach ($roleResultArr as $row) {
@@ -63,8 +65,7 @@ class DbHandler {
       }
 
       if ($userResult != false) {
-        // Close connection and free memory
-        pg_free_result($userResult);
+        // Close connection
         $this->disconnect();
       }
 
@@ -73,6 +74,7 @@ class DbHandler {
       return new User(null, null, null, null);
     }
   }
+
 
   // Create a user in database
   public function createUser(string $userName, string $password, bool $isAdmin): bool {
@@ -102,6 +104,7 @@ class DbHandler {
       }
 
       $userResultArr = pg_fetch_assoc($userResult);
+      pg_free_result($userResult);
       $userId = $userResultArr['id'];
 
       $roleQuery = "INSERT INTO dt161g.project_user_role (user_id, role_id) VALUES($1, $2)";
@@ -109,13 +112,13 @@ class DbHandler {
       // If admin is to be created, also insert that role.
       if ($isAdmin) pg_query_params($this->dbConnection, $roleQuery, [$userId, 2]);
 
-      pg_free_result($userResult);
       $this->disconnect();
       return true;
     } else {
       return false;
     }
   }
+
 
   // Delete a user from database
   public function deleteUser($userName): bool {
@@ -144,6 +147,7 @@ class DbHandler {
     }
     return false;
   }
+
 
   // Function that creates a category
   public function createCategory(string $categoryName, string $userName): bool {
@@ -220,6 +224,7 @@ class DbHandler {
     return array();
   }
 
+
   // Function that deletes a certain category
   public function deleteCategory(string $categoryName, string $userName): bool {
     $this->connect();
@@ -249,16 +254,56 @@ class DbHandler {
     return true;
   }
 
+
+  // Adds provided image to the database, returns true if successful.
   public function addImage(Image $image): bool {
+    $this->connect();
 
-    return true;
-  }
+    if ($this->isConnected()) {
+      $userName = $image->getUserName();
 
-  public function deleteImage(string $checksum): bool {
+      // Get user id and category id.
+      $userId = $this->getUserId($userName);
+      $category = $image->getCategory();
+      $categoryId = $this->getCategoryId($userId, $category);
+      if ($userId == "" || $categoryId == "") {
+        $this->disconnect();
+        return false;
+      }
+      $imageData = $image->getImageData();
+      $checksum = $image->getCheckSum();
+      $mime = $image->getMime();
+      $date = $image->getDate();
 
+      // See if image with same checksum already exists
+      $checkImageQuery = "SELECT checksum FROM dt161g.project_image WHERE checksum=$1";
+      $checkImageResult = pg_query_params($this->dbConnection, $checkImageQuery, [$checksum]);
+      $checkImageResultArr = pg_fetch_array($checkImageResult);
+      pg_free_result($checkImageResult);
+      // If it exists, return false
+      if ($checkImageResultArr) {
+        $this->disconnect();
+        return false;
+      }
+
+      // Add image to database.
+      $imageQuery = "INSERT INTO dt161g.project_image
+                    (image_data, checksum, mime, date, category_id, user_id)
+                    VALUES($1, $2, $3, $4, $5, $6)";
+
+      $byteaImageData = pg_escape_bytea($imageData);
+      $imageResult = pg_query_params($this->dbConnection, $imageQuery,
+                     [$byteaImageData, $checksum, $mime, $date, $categoryId, $userId]);
+
+      $this->disconnect();
+      if ($imageResult) {
+        return true;
+      } else {
+        return false;
+      }
+    }
     return false;
   }
-
 
   // Private functions.
 
@@ -285,6 +330,23 @@ class DbHandler {
       return "";
     } else {
       return $userResultArr['id'];
+    }
+  }
+
+  // Gets the id for a category with a given name. Assumes connection to database
+  // is established.
+  private function getCategoryId(string $userId, string $categoryName): string {
+    // get id
+    $categoryQuery = "SELECT id FROM dt161g.project_category WHERE name=$1 AND user_id=$2";
+    $categoryResult = pg_query_params($this->dbConnection, $categoryQuery, [$categoryName, $userId]);
+    $categoryResultArr = pg_fetch_array($categoryResult);
+    pg_free_result($categoryResult);
+
+    // If category does not exist, return null
+    if (!$categoryResultArr) {
+      return "";
+    } else {
+      return $categoryResultArr['id'];
     }
   }
 

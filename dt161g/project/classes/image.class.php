@@ -21,13 +21,13 @@ class Image {
                               string $imageData,
                               string $checksum,
                               string $mime,
-                              $exif) {
+                              string $date) {
     $this->userName = $userName;
     $this->category = $category;
     $this->imageData = $imageData;
     $this->checksum = $checksum;
     $this->mime = $mime;
-    $this->exif = $exif;
+    $this->date = $date;
   }
 
   // Getters for member variables
@@ -46,15 +46,8 @@ class Image {
   public function getMime(): string {
     return $this->mime;
   }
-
-  // Returns date extracted from exif, if it cannot be extracted it returns
-  // 1 jan 1970.
   public function getDate(): string {
-    if (isset($this->exif['DateTimeOriginal'])) {
-      return date('Y-m-d H:i:s', strtotime($this->exif['DateTimeOriginal']));
-    } else {
-      return date('Y-m-d H:i:s', 0);
-    }
+    return $this->date;
   }
 
   // Generates an image-tag for display .
@@ -70,5 +63,5 @@ class Image {
   private $imageData;
   private $checksum;
   private $mime;
-  private $exif;
+  private $date;
 }
