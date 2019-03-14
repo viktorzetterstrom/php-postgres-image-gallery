@@ -69,6 +69,10 @@ section {
   min-height: inherit;
 }
 
+.regular-image {
+  width: 500px;
+}
+
 footer {
   border-top: 2px solid gray;
   text-align: center;

@@ -335,6 +335,62 @@ class DbHandler {
     return false;
   }
 
+
+  // Function that retrieves images from the database.
+  public function getImages(string $userName, string $category =""): array {
+    $this->connect();
+
+    if ($this->isConnected()) {
+      // Get user id, return false if not found
+      $userId = $this->getUserId($userName);
+      if ($userId == "") {
+        $this->disconnect();
+        return [];
+      }
+
+      // If provided, get category id
+      if ($category != "") {
+        $categoryId = $this->getCategoryId($userId, $category);
+      }
+
+      // Fetch all images
+      if ($category != "") {
+        $imageQuery = "SELECT * FROM dt161g.project_image WHERE user_id=$1 AND category_id=$2";
+        $imageResults = pg_query_params($this->dbConnection, $imageQuery, [$userId, $categoryId]);
+      } else {
+        $imageQuery = "SELECT * FROM dt161g.project_image WHERE user_id=$1";
+        $imageResults = pg_query_params($this->dbConnection, $imageQuery, [$userId]);
+      }
+
+
+      // Add images to array
+      if ($imageResults) {
+        $imageArray = [];
+        while ($dbImage = pg_fetch_assoc($imageResults)) {
+          $dbCategory = $this->getCategoryName($dbImage['category_id']);
+          $imageData = pg_unescape_bytea($dbImage['image_data']);
+          $checksum = $dbImage['checksum'];
+          $mime = $dbImage['mime'];
+          $date = $dbImage['date'];
+          $newImage = new Image($userName, $dbCategory, $imageData, $checksum, $mime, $date);
+
+          array_push($imageArray, $newImage);
+        }
+      }
+
+      // Disconnect
+      pg_free_result($imageResults);
+      $this->disconnect();
+
+      // Return images
+      return $imageArray;
+    }
+    return [];
+  }
+
+
+
+
   // Private functions.
 
   // Checks that a string only contains valid chars. Used to verify names of
@@ -377,6 +433,22 @@ class DbHandler {
       return "";
     } else {
       return $categoryResultArr['id'];
+    }
+  }
+
+  // Fetches a category name based on given id, assumes connections is established
+  private function getCategoryName(string $categoryId): string {
+    // get id
+    $categoryQuery = "SELECT name FROM dt161g.project_category WHERE id=$1";
+    $categoryResult = pg_query_params($this->dbConnection, $categoryQuery, [$categoryId]);
+    $categoryResultArr = pg_fetch_array($categoryResult);
+    pg_free_result($categoryResult);
+
+    // If category does not exist, return null
+    if (!$categoryResultArr) {
+      return "";
+    } else {
+      return $categoryResultArr['name'];
     }
   }
 

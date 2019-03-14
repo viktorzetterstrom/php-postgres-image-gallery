@@ -29,21 +29,14 @@ if ($userLoggedIn) {
 }
 
 // Determine which user and/or category to show.
-$userName = "No user provided";
-$category = "No category provided";
+$userName = "";
+$category = "";
 if (isset($_GET['user'])) {
   $userName = $_GET['user'];
 }
 if (isset($_GET['category'])) {
   $category = $_GET['category'];
 }
-
-
-// If user is not logged in, redirect to index.php
-if (!$userLoggedIn) {
-  header("location:index.php");
-}
-
 
 /*******************************************************************************
  * HTML section starts here
@@ -107,6 +100,14 @@ if (!$userLoggedIn) {
     <h2>Images</h2>
     <p><?php echo $userName ?></p>
     <p><?php echo $category ?></p>
+    <?php
+      $images = DbHandler::Instance()->getImages($userName, $category);
+
+      foreach ($images as $image) {
+        echo $image->generateTag("regular-image");
+      }
+
+    ?>
   </section>
 </main>
 

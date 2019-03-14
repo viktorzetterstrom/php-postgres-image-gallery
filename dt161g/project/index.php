@@ -88,7 +88,9 @@ if ($userLoggedIn) {
   <!-- area for showing pictures -->
   <section>
     <h2>Welcome!</h2>
-    <p>Description goes here...</p>
+    <p>This is a page where you can upload and categorize images. See the menu on the left for links to different users and their categories. </p>
+    <p>After logging in you will have access to your userpage where you can create your own categories and add images to them.</p>
+    <p>If you are an admin you will also have access to the admin page where you can add and remove users.</p>
   </section>
 </main>
 
