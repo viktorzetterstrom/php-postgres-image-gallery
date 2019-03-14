@@ -54,4 +54,6 @@ if (in_array($mimeType, $supportedMimes, true)) {
   } else {
     alertAndRedirectUser("Could not add image to database", "userpage.php");
   }
+} else {
+  alertAndRedirectUser("Only .jpg, .png, .tiff and .gif supported.", "userpage.php");
 }

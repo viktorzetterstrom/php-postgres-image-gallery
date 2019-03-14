@@ -98,14 +98,34 @@ if (isset($_GET['category'])) {
   <!-- area for showing pictures -->
   <section>
     <h2>Images</h2>
-    <p><?php echo $userName ?></p>
-    <p><?php echo $category ?></p>
     <?php
       $images = DbHandler::Instance()->getImages($userName, $category);
 
-      foreach ($images as $image) {
-        echo $image->generateTag("regular-image");
+      // See if we could find any images.
+      if (!empty($images)) {
+        // Show heading
+        $message = 'Showing pictures from user ' . $userName;
+        if ($category != "" ) $message .= ' and category ' . $category;
+
+        echo '<h3>' . $message . '</h3>';
+
+        // Show images
+        foreach ($images as $image) {
+          echo $image->generateTag("regular-image");
+        }
+      } else {
+        // Check if username/category was provided/correct
+        if ($userName === "") {
+          echo '<h3>No user specified, cannot show any pictures</h3>';
+        } else if (DbHandler::Instance()->getUser($userName)->getUserName() == null) {
+          echo '<h3>Specified user does not exist</h3>';
+        } else if ($category === "") {
+          echo '<h3>No pictures in database for user ' . $userName . '</h3>';
+        } else {
+          echo '<h3>No pictures in database for user ' . $userName . ' in the category ' . $category . '</h3>';
+        }
       }
+
 
     ?>
   </section>

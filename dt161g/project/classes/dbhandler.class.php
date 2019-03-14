@@ -46,7 +46,7 @@ class DbHandler {
 
       // If no user is found, return null-user
       if ($userResultArr['username'] != $userName) {
-        return new User(null, null, null, null);
+        return new User("", "", "", []);
       }
 
       $password = $userResultArr['password'];
@@ -71,7 +71,7 @@ class DbHandler {
 
       return new User($userId, $userName, $password, $roles);
     } else {
-      return new User(null, null, null, null);
+      return new User("", "", "", []);
     }
   }
 
@@ -337,7 +337,7 @@ class DbHandler {
 
 
   // Function that retrieves images from the database.
-  public function getImages(string $userName, string $category =""): array {
+  public function getImages(string $userName, string $category = ""): array {
     $this->connect();
 
     if ($this->isConnected()) {
@@ -351,21 +351,28 @@ class DbHandler {
       // If provided, get category id
       if ($category != "") {
         $categoryId = $this->getCategoryId($userId, $category);
+        // If empty string is returned, category does not exist. Then flag id
+        // as invalid.
+        if ($categoryId == "") $categoryId = 'invalid';
+      } else {
+        $categoryId = "";
       }
 
       // Fetch all images
-      if ($category != "") {
-        $imageQuery = "SELECT * FROM dt161g.project_image WHERE user_id=$1 AND category_id=$2";
-        $imageResults = pg_query_params($this->dbConnection, $imageQuery, [$userId, $categoryId]);
-      } else {
-        $imageQuery = "SELECT * FROM dt161g.project_image WHERE user_id=$1";
-        $imageResults = pg_query_params($this->dbConnection, $imageQuery, [$userId]);
+      $imageResults = false;
+      if ($categoryId != "invalid") {
+        if ($category != "") {
+          $imageQuery = "SELECT * FROM dt161g.project_image WHERE user_id=$1 AND category_id=$2";
+          $imageResults = pg_query_params($this->dbConnection, $imageQuery, [$userId, $categoryId]);
+        } else {
+          $imageQuery = "SELECT * FROM dt161g.project_image WHERE user_id=$1";
+          $imageResults = pg_query_params($this->dbConnection, $imageQuery, [$userId]);
+        }
       }
 
-
       // Add images to array
+      $imageArray = [];
       if ($imageResults) {
-        $imageArray = [];
         while ($dbImage = pg_fetch_assoc($imageResults)) {
           $dbCategory = $this->getCategoryName($dbImage['category_id']);
           $imageData = pg_unescape_bytea($dbImage['image_data']);
@@ -376,10 +383,10 @@ class DbHandler {
 
           array_push($imageArray, $newImage);
         }
+        pg_free_result($imageResults);
       }
 
       // Disconnect
-      pg_free_result($imageResults);
       $this->disconnect();
 
       // Return images
