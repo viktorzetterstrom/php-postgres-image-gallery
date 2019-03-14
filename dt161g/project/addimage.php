@@ -38,9 +38,9 @@ if (in_array($mimeType, $supportedMimes, true)) {
   // Get date from exif
   $exif = @exif_read_data($file);
   if (isset($exif['DateTimeOriginal'])) {
-    $date =  date('Y-m-d H:i:s', strtotime($exif['DateTimeOriginal']));
+    $date =  date('Y-m-d H:i', strtotime($exif['DateTimeOriginal']));
   } else {
-    $date = date('Y-m-d H:i:s', 0);
+    $date = date('Y-m-d H:i', strtotime("2000-01-01 00:00"));
   }
 
   // Create new image

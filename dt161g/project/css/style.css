@@ -47,6 +47,19 @@ ul {
   padding: 0;
 }
 
+.user-links {
+  margin-bottom: 1em;
+}
+
+.user-link {
+  font-size: 1.2em;
+  padding:0;
+}
+
+.category-link {
+  padding-left: 1em;
+}
+
 section {
   margin-left: 20px;
   padding: 20px;

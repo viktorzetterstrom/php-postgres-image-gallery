@@ -8,6 +8,8 @@
  * vize1500
  * vize1500@student.miun.se
  ******************************************************************************/
+declare(strict_types = 1);
+require_once("util.php");
 
 
 
@@ -21,10 +23,21 @@ $userLoggedIn = isset($_SESSION['userLoggedIn']);
 $adminLoggedIn = isset($_SESSION['adminLoggedIn']);
 
 // Get username.
-$username = "No user is set!";
+$loggedInUser = "No user is set!";
 if ($userLoggedIn) {
-    $username = $_SESSION['userLoggedIn'];
+    $loggedInUser = $_SESSION['userLoggedIn'];
 }
+
+// Determine which user and/or category to show.
+$userName = "No user provided";
+$category = "No category provided";
+if (isset($_GET['user'])) {
+  $userName = $_GET['user'];
+}
+if (isset($_GET['category'])) {
+  $category = $_GET['category'];
+}
+
 
 // If user is not logged in, redirect to index.php
 if (!$userLoggedIn) {
@@ -54,7 +67,6 @@ if (!$userLoggedIn) {
     <h1><?php echo $title ?></h1>
     <div class="links">
       <a href="index.php">Start</a>
-      <?PHP if ($userLoggedIn) echo '<a href="images.php">Images</a>' ?>
       <?PHP if ($userLoggedIn) echo '<a href="userpage.php">User</a>' ?>
       <?PHP if ($adminLoggedIn) echo '<a href="admin.php">Admin</a>' ?>
     </div>
@@ -71,7 +83,7 @@ if (!$userLoggedIn) {
     </div>
     <div id="logout" <?php if (!$userLoggedIn) echo 'style="display:none"' ?>>
       <form id="logoutForm" action="logout.php" method="POST">
-        <label for="logoutButton">Logged in as: <?PHP echo $username ?></label>
+        <label for="logoutButton">Logged in as: <?PHP echo $loggedInUser ?></label>
         <input type="submit" id="logoutButton" value="Log out">
       </form>
     </div>
@@ -85,26 +97,16 @@ if (!$userLoggedIn) {
     <h2>Navigation</h2>
     <nav>
       <ul>
-        <li>
-          <a>Uno</a>
-        </li>
-        <li>
-          <a>Dos</a>
-        </li>
-        <li>
-          <a>Tres</a>
-        </li>
-        <li>
-          <a>Quattro</a>
-        </li>
+        <?PHP echo generateNavigationLinks() ?>
       </ul>
     </nav>
   </aside>
 
   <!-- area for showing pictures -->
   <section>
-    <h2>Welcome!</h2>
-    <p>Description goes here...</p>
+    <h2>Images</h2>
+    <p><?php echo $userName ?></p>
+    <p><?php echo $category ?></p>
   </section>
 </main>
 

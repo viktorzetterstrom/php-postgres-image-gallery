@@ -36,3 +36,30 @@ function alertAndRedirectUser(string $message, string $redirect): void {
   window.location = '" . $redirect . "';
   </script>";
 }
+
+// Generates the navigational links to the left.
+function generateNavigationLinks(): string {
+  $usersAndCategories = DbHandler::Instance()->getUsersAndCategories();
+
+  $navigationLinks = "";
+  foreach ($usersAndCategories as $userAndCat) {
+    // Enclose it all with a div
+    $navigationLinks .= '<div class="user-links">';
+
+    // Append user name tag
+    $userName =  $userAndCat[0];
+    $userTag = '<li><a href="images.php?user=' . $userName .'" class="user-link">' . $userName . '</a></li>';
+    $navigationLinks .= $userTag;
+
+    // Append categories
+    $categories = $userAndCat[1];
+    // Append closing ul around categories
+    $navigationLinks .= '<ul>';
+    foreach ($categories as $category) {
+      $categoryTag = '<li><a href="images.php?user=' . $userName .'&category=' . $category . '" class="category-link">' . $category . '</a></li>';
+      $navigationLinks .= $categoryTag;
+    }
+    $navigationLinks .= '</ul></div>';
+  }
+  return $navigationLinks;
+}

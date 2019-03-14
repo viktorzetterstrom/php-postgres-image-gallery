@@ -75,6 +75,36 @@ class DbHandler {
     }
   }
 
+  // Gets all the usernames in an array.
+  public function getUsersAndCategories(): array {
+    $this->connect();
+
+    if ($this->isConnected()) {
+      $usersAndCategories = [];
+
+      // Get all user names
+      $usersQuery = "SELECT username FROM dt161g.project_user";
+      $usersResult = pg_query($this->dbConnection, $usersQuery);
+
+      $userNames = [];
+      while ($userName = pg_fetch_array($usersResult)) {
+        array_push($userNames, $userName[0]);
+      }
+
+      // For each user name
+      foreach ($userNames as $userName) {
+        // Get all categories for that user
+        $userCategories = $this->getCategoriesForUser($userName);
+
+        // Append to return array
+        $userAndCategories = [$userName, $userCategories];
+        array_push($usersAndCategories, $userAndCategories);
+      }
+
+      return $usersAndCategories;
+    }
+  }
+
 
   // Create a user in database
   public function createUser(string $userName, string $password, bool $isAdmin): bool {
@@ -216,7 +246,6 @@ class DbHandler {
         array_push($categories, $categoryName['name']);
       }
       pg_free_result($categoryResult);
-      $this->disconnect();
 
       return $categories;
     }

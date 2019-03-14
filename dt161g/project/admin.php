@@ -9,6 +9,8 @@
  * vize1500
  * vize1500@student.miun.se
  *****************************************************************************/
+declare(strict_types = 1);
+require_once("util.php");
 
 $title = 'DT161G - Projekt - Admin';
 $author = 'Viktor Zetterström';
@@ -52,7 +54,6 @@ if (!$adminLoggedIn) {
     <h1><?php echo $title ?></h1>
     <div class="links">
       <a href="index.php">Start</a>
-      <?PHP if ($userLoggedIn) echo '<a href="images.php">Images</a>' ?>
       <?PHP if ($userLoggedIn) echo '<a href="userpage.php">User</a>' ?>
       <?PHP if ($adminLoggedIn) echo '<a href="admin.php">Admin</a>' ?>
     </div>
@@ -83,18 +84,7 @@ if (!$adminLoggedIn) {
     <h2>Navigation</h2>
     <nav>
       <ul>
-        <li>
-          <a>Uno</a>
-        </li>
-        <li>
-          <a>Dos</a>
-        </li>
-        <li>
-          <a>Tres</a>
-        </li>
-        <li>
-          <a>Quattro</a>
-        </li>
+        <?PHP echo generateNavigationLinks() ?>
       </ul>
     </nav>
   </aside>
