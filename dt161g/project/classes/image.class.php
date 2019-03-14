@@ -21,7 +21,7 @@ class Image {
                               string $imageData,
                               string $checksum,
                               string $mime,
-                              array $exif) {
+                              $exif) {
     $this->userName = $userName;
     $this->category = $category;
     $this->imageData = $imageData;
@@ -40,11 +40,28 @@ class Image {
   public function getImageData(): string {
     return $this->imageData;
   }
+  public function getCheckSum(): string {
+    return $this->checksum;
+  }
   public function getMime(): string {
     return $this->mime;
   }
-  public function getExif(): array {
-    return $this->exif;
+
+  // Returns date extracted from exif, if it cannot be extracted it returns
+  // 1 jan 1970.
+  public function getDate(): string {
+    if (isset($this->exif['DateTimeOriginal'])) {
+      return date('Y-m-d H:i:s', strtotime($this->exif['DateTimeOriginal']));
+    } else {
+      return date('Y-m-d H:i:s', 0);
+    }
+  }
+
+  // Generates an image-tag for display .
+  public function generateTag(string $classString = "", string $idString = ""): string {
+    $src = 'data: '.$this->mime.';base64,'.$this->imageData;
+    $tag = '<img src="' . $src . '" class="' . $classString .'" id="' . $idString . '">';
+    return $tag;
   }
 
   // Member variables

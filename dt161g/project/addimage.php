@@ -32,7 +32,7 @@ if (in_array($mimeType, $supportedMimes, true)) {
   // Get image data
   $userName = $_SESSION['userLoggedIn'];
   $category = $_POST['cname'];
-  $imageData = file_get_contents($file);
+  $imageData = base64_encode(file_get_contents($file));
   $exif = @exif_read_data($file);
   $checksum = md5_file($file);
 
@@ -40,5 +40,12 @@ if (in_array($mimeType, $supportedMimes, true)) {
   $image = new Image($userName, $category, $imageData, $checksum, $mimeType, $exif);
 
   // Try to add image to database
+  // $success = DbHandler::Instance()->addImage($image);
+
+  // if ($success) {
+
+  // } else {
+
+  // }
 
 }
