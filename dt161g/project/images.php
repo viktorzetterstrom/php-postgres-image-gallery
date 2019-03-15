@@ -104,14 +104,19 @@ if (isset($_GET['category'])) {
       // See if we could find any images.
       if (!empty($images)) {
         // Show heading
-        $message = 'Showing pictures from user ' . $userName;
-        if ($category != "" ) $message .= ' and category ' . $category;
+        $message = '<h3>User: ' . $userName;
+        if ($category != "" ) $message .= '  -  Category: ' . $category;
+        $message .= '</h3>';
 
-        echo '<h3>' . $message . '</h3>';
+        echo $message;
 
         // Show images
         foreach ($images as $image) {
-          echo $image->generateTag("regular-image");
+          $imageTag =  '<div class="image-container">';
+          $imageTag .= $image->generateTag("regular-image");
+          $imageTag .= '<p class="image-text"> Date: ' . $image->getDate() . '</p>';
+          $imageTag .= '</div>';
+          echo $imageTag;
         }
       } else {
         // Check if username/category was provided/correct
@@ -125,8 +130,6 @@ if (isset($_GET['category'])) {
           echo '<h3>No pictures in database for user ' . $userName . ' in the category ' . $category . '</h3>';
         }
       }
-
-
     ?>
   </section>
 </main>

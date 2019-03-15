@@ -8,10 +8,41 @@
  * vize1500@student.miun.se
  ******************************************************************************/
 
+@font-face {
+  font-family: "fira-code";
+  src: url("../font/FiraCode-Light.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "staatliches";
+  src: url("../font/Staatliches-Regular.woff2") format("woff2");
+}
+
+html, body {
+  margin:0;
+  padding:0;
+}
+
 html {
-  margin: auto;
-  font: 13px/1.2 Helvetica, Arial, sans-serif;
-  background: #EAEAEA;
+  font: 13px/1.2 "fira-code";
+  color: rgb(43, 43, 43);
+  background: rgb(241, 241, 241);
+}
+
+h1, h2 {
+  font-family: "staatliches";
+  margin-top: 15px;
+  margin-bottom: 5px;
+}
+
+input {
+  display: block;
+  margin-bottom: 5px;
+  font-family: "fira-code";
+}
+
+input[type=checkbox], #logoutButton {
+  display: inline;
 }
 
 header {
@@ -20,6 +51,12 @@ header {
   align-items: center;
   border-bottom: 2px solid gray;
   padding: 10px 20px;
+  background: gray;
+  color: rgb(241, 241, 241);
+}
+
+a {
+  font-weight: bold;
 }
 
 h1 {
@@ -29,6 +66,7 @@ h1 {
 .login {
   display: flex;
   float: right;
+  text-align: right;
 }
 
 main {
@@ -40,6 +78,21 @@ aside {
   float: left;
   max-width: 250px;
   padding: 20px;
+}
+
+a:link {
+  color: rgb(190, 0, 0);
+  text-decoration: none;
+}
+
+a:visited {
+  color: rgb(190, 0, 0);
+  text-decoration: none;
+}
+
+a:hover {
+  color: rgb(104, 0, 0);
+  text-decoration: underline;
 }
 
 ul {
@@ -64,13 +117,26 @@ section {
   margin-left: 20px;
   padding: 20px;
   padding-left: 40px;
+  padding-right: 40px;
   border-left: 2px solid gray;
   vertical-align: top;
   min-height: inherit;
 }
 
+.image-container {
+  width: 600px;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+}
+
+.image-container p {
+  margin: 5px;
+}
+
 .regular-image {
-  width: 500px;
+  width: inherit;
+  box-shadow: 4px 4px 35px -20px rgba(0,0,0,0.75);
+  border: 0.3px solid black;
 }
 
 footer {

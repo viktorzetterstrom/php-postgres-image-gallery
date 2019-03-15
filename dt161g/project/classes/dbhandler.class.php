@@ -153,7 +153,6 @@ class DbHandler {
   // Delete a user from database
   public function deleteUser($userName): bool {
     // It is not possible to delete current logged in user.
-    session_start();
     if ($_SESSION['userLoggedIn'] == $userName) {
       return false;
     }
