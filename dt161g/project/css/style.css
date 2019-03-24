@@ -35,14 +35,32 @@ h1, h2 {
   margin-bottom: 5px;
 }
 
+h3 {
+  margin-bottom: 5px;
+  margin-top: 20px;
+}
+
 input {
   display: block;
+  margin-top: 5px;
   margin-bottom: 5px;
   font-family: "fira-code";
 }
 
 input[type=checkbox], #logoutButton {
   display: inline;
+}
+
+input[type=submit] {
+  color: rgb(241, 241, 241);
+  background-color: rgb(190, 0, 0);
+  border: 1px solid rgb(43, 43, 43);
+  border-radius: 3px;
+}
+
+input[type=submit]:hover {
+  color: rgb(104, 0, 0);
+  border: 1px solid rgb(104, 0, 0);
 }
 
 header {

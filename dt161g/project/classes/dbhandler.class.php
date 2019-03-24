@@ -118,6 +118,19 @@ class DbHandler {
 
     if ($this->isConnected()) {
 
+      // First check if user already exists.
+      $checkUserQuery = "SELECT username FROM dt161g.project_user WHERE username=$1";
+      $checkUserResult = pg_query_params($this->dbConnection, $checkUserQuery, [$userName]);
+      $checkUserResultArr = pg_fetch_array($checkUserResult);
+
+      // If it exists, return false
+      if ($checkUserResultArr) {
+        pg_free_result($checkUserResult);
+        $this->disconnect();
+        return false;
+      }
+
+
       // Hash password
       $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
