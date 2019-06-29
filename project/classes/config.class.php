@@ -61,5 +61,4 @@ class Config {
   private $user = 'vize1500';
   private $dbname = 'vize1500';
   private $password = 'gRd6QmzSN';
-
 }
